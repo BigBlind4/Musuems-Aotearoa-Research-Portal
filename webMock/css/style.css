@@ -1,0 +1,124 @@
+/*parts of the page */
+body, #container{
+	width:85%;
+	margin-left:auto;
+	margin-right:auto;
+}
+body{
+	background-color:#000020;
+}
+#container{
+	border: 4px solid white;
+	border-radius:25px;
+	background-color:white;
+}
+header{
+	background-color:#079aff;
+	border-radius:20px;
+	width: 100%;
+	margin-left: auto;
+	margin-right: auto;
+}
+nav{
+	border-top: 2px dashed black;
+	border-bottom: 2px dashed black;
+	border-top-left-radius:25px;
+	border-top-right-radius:25px;
+	border-bottom-left-radius:25px;
+	border-bottom-right-radius:25px;
+	margin-top:10px;
+	margin-bottom:10px;
+
+}
+
+footer{
+	border-top: 2px solid #FFB240;
+	background-color: #ffd08a;
+	border-radius: 20px;
+	padding-bottom: 30px;
+}
+.row{
+	width:90%;
+	padding: 5px 40px;
+	margin-left:auto;
+	margin-right:auto;
+}
+.searchResult{
+	padding: 5px 40px;
+	border-bottom: 2px solid #A64600;
+	width:70%;
+	margin: 10px 40px;
+	}
+/*image settings*/
+.logo{
+	padding:10px 10px 10px 40px;
+}
+.searchImage{
+	margin-right:25px;
+}
+
+/*text settings*/
+h1,h2, p{
+	padding: 5px 40px;
+}
+/*link settings	*/
+#logLink{
+	float:right;
+	text-decoration: none;
+	text-align: right;
+	font-size: 25px;
+	margin-top: 5%;
+	margin-right: 35px;
+	font-color: white;
+	background-color: white;
+	padding: 5px 35px;
+	border-radius: 20px;
+}
+.link, .link2{
+	margin-left: 15%;
+	text-align: center;
+	text-decoration: none;
+	border-top: 2px solid #A65600;
+	border-bottom: 2px solid #A65600;
+	padding: 10px;
+	border-radius: 15px;
+}
+
+.link:hover{
+	font-weight: bold;
+	padding-left: 5px;
+	background-color: #FF9140;
+}
+.link2:hover{
+	font-weight: bold;
+	padding-left: 8px;
+	background-color: #FF9140;
+}
+a:visited{
+ font-color:#4013AF;
+}
+
+/*text setting*/
+h1,h2, h3{
+	font-family: "Arial Black", Gadget, sans-serif;
+	font-weight: bold;
+	color:#A64600;
+}
+p{
+ font-family: Arial, Helvetica, sans-serif;
+}
+#nextTo{
+	margin-left:250px; 
+	margin-top:-145px;
+}
+h1{
+	font-size:40px;
+}
+h2{
+	font-size:30px;
+}
+h3{
+	margin-top:-110px;
+	margin-left: 140px;
+	padding-bottom:90px;
+}
