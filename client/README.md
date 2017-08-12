@@ -29,13 +29,13 @@ Generate node packages
 $ npm install
 ```
 
-Once completed, you will see `node_module` folder generated in the `client` directory. Please **DO NOT** commit this folder into git.
+Once completed, you will see `node_module` folder generated in the `client` directory. Please **DO NOT** commit this folder into gitlab.
 
 Build the project
 ```
 $ npm run
 ```
-Wait until the project is successfully built and server is started. This project is configured to the port 8080, you can change it in `package.json` file.
+Wait until the project is successfully built and server is started. You will find `dist` folder is created, and this is where the deployed scripts are. Please **DO NOT** commit this folder into gitlab.
 
 Navigate to `http://localhost:8080`. The app will automatically reload if you change any of the source file.
 
