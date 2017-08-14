@@ -10,6 +10,7 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from '../home/home.component';
 import { NavComponent } from '../nav/nav.component';
 import { SearchComponent } from '../search/search.component';
+import { UserProfileComponent } from '../userprofile/userprofile.component';
 
 import { StorageService } from '../shared/storage.service';
 import { UIChangeNotificationService } from '../shared/uichangenotification.service';
@@ -31,7 +32,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awes
     AppComponent,
     HomeComponent,
     NavComponent,
-    SearchComponent
+    SearchComponent,
+    UserProfileComponent
   ],
   providers: [
     StorageService,

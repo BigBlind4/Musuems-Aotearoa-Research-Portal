@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { SearchService } from './search.service';
-import { ActivatedRoute } from '@angular/router';
 import { UIChangeNotificationService } from '../shared/uichangenotification.service';
 import { SESSION_KEYS, CHANGE_NOTIFICATION_KEYS } from '../shared/constants';
 import { StorageService } from '../shared/storage.service';
@@ -16,7 +15,7 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private uiChangeNotificationServiceSubscriber: any;
 
-  constructor(private searchService: SearchService, private activatedRouter: ActivatedRoute,
+  constructor(private searchService: SearchService,
     private uiChangeNotificationService: UIChangeNotificationService, private storageService: StorageService ) {}
 
   ngOnInit() {
@@ -31,9 +30,6 @@ export class SearchComponent implements OnInit, OnDestroy {
               if (this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM) != null) {
                 let item = String(this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM));
                 this.search(item);
-                // this.activatedRouter.params.subscribe(params => {
-                //   this.search(item);
-                // });
               }
             }}
     );
@@ -46,7 +42,7 @@ export class SearchComponent implements OnInit, OnDestroy {
   search(item: string) {
     this.searchService.search(item).subscribe( data => {
       this.searchResults = data.search.results;
-      this.count = this.searchResults.length;
+      this.count = data.search.result_count;
     });
 
     this.storageService.removeStoredData(SESSION_KEYS.SEARCH_ITEM);

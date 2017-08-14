@@ -12,8 +12,8 @@ export class SearchService {
         if (term !== '') {
             term = term.replace(' ', '+');
             return this.http
-                //.get(`http://10.140.142.221:8089/search/hello?api_key=svowNJL8JgZVmBMhUzho&text=${term}`)
-                .get(`http://api.digitalnz.org/v3/records.json?api_key=svowNJL8JgZVmBMhUzho&text=${term}`)
+                .get(`http://10.140.109.23:8089/search/records?api_key=svowNJL8JgZVmBMhUzho&text=${term}`)
+                //.get(`http://api.digitalnz.org/v3/records.json?api_key=svowNJL8JgZVmBMhUzho&text=${term}`)
                 .map(response => response.json());
         }
     }

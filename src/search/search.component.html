@@ -1,16 +1,8 @@
-<!-- <div class="row">
-    <div class="eleven columns">
-        <input type="text" style="width: 100%" id="searchinput" #searchBox>
-    </div>
-    <div class="one column">
-        <button type="submit" (click)="search(searchBox.value)">Search</button>
-    </div>
-</div> -->
 <div class="page">
     <div class="row">
         <h3>Search Results</h3>
-        <label class="middle" *ngIf="count!==0">{{count}} records found.</label>
-        <label class="middle" *ngIf="count===0">No records found.</label>
+        <label *ngIf="count!==0">{{count}} records found.</label>
+        <label *ngIf="count===0">No records found.</label>
 
     </div>
     <div class="row">

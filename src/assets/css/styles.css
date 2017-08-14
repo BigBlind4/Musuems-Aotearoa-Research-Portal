@@ -49,10 +49,9 @@ footer {
 }
 
 .searchResult {
-    /* padding: 5px 40px; */
     border-bottom: 1px solid #A64600;
-    /* width: 50%; */
-    margin: 10px 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 
@@ -65,10 +64,14 @@ footer {
 
 /*text settings*/
 
-h1,
-h2,
+
+/* h1,
+h2, */
+
 h3 {
-    padding: 20px 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* padding: 20px 40px; */
 }
 
 .middle {
@@ -78,6 +81,15 @@ h3 {
 
 .page {
     min-height: 400px;
+}
+
+.page .row {
+    padding-left: 40px;
+    padding-right: 40px;
+}
+
+.nomargin {
+    margin: 0;
 }
 
 
