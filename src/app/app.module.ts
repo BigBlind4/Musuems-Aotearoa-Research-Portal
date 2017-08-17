@@ -17,6 +17,7 @@ import { UIChangeNotificationService } from '../shared/uichangenotification.serv
 import { SearchService } from '../search/search.service';
 
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @NgModule({
   imports: [
@@ -26,7 +27,8 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awes
     RouterModule.forRoot(
       appRoutes, { enableTracing: true }
     ),
-    AngularFontAwesomeModule
+    AngularFontAwesomeModule,
+    NgxPaginationModule
   ],
   declarations: [
     AppComponent,
