@@ -1,11 +1,4 @@
-before_script:
-  - npm install
-
-stages:
-- build
-
-
-build_job:
-  stage: build
-  script: 
-  - npm run build
+job:
+  script:
+    - npm install
+    - npm run build
