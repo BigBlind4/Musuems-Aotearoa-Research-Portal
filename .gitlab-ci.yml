@@ -1,14 +1,11 @@
+before_script:
+  - npm install
+
 stages:
-- install
 - build
 
-install_job:
-  stage: install
-  script: 
-  - npm install
 
 build_job:
   stage: build
   script: 
   - npm run build
-  when: on_success
