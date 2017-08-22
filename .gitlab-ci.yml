@@ -1,4 +1,5 @@
-job:
-  script:
-    - npm install
-    - npm run build
+job1:
+  script: "npm install"
+
+job2:
+  script: "npm run build"
