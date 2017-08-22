@@ -2,10 +2,14 @@ image: node:6.11.1
 before_script:
   - npm install
 
+cache:
+  path:
+  - node_modules/
+  
 stages:
   - build
 
 build_job:
   stage: build
   script: 
-  - npm run build
+    - npm run prestart
