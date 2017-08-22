@@ -12,4 +12,4 @@ stages:
 build_job:
   stage: build
   script: 
-    - npm run prestart
+    - npm run -f build
