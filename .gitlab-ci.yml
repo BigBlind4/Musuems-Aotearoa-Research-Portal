@@ -3,7 +3,7 @@ before_script:
   - npm install
 
 cache:
-  path:
+  paths:
   - node_modules/
   
 stages:
