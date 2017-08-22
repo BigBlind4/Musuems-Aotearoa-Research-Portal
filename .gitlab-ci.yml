@@ -1,5 +1,11 @@
-job1:
-  script: "npm install"
+image: node:6.11.1
+before_script:
+  - npm install
 
-job2:
-  script: "npm run build"
+stages:
+  - build
+
+build_job:
+  stage: build
+  script: 
+  - npm run build
