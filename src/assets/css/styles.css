@@ -42,8 +42,7 @@ nav {
 }
 
 footer {
-    border-top: 2px solid #FFB240;
-    background-color: #ffd08a;
+    background-color: rgb(251, 216, 178);
     border-radius: 5px;
     padding-bottom: 30px;
 }
@@ -74,13 +73,17 @@ h3 {
     /* padding: 20px 40px; */
 }
 
+h4 {
+    padding-top: 20px;
+}
+
 .middle {
     padding-left: 40px;
     padding-right: 40px;
 }
 
 .page {
-    min-height: 400px;
+    min-height: 768px;
 }
 
 .page .row {
@@ -94,4 +97,19 @@ h3 {
 
 label {
     font-weight: normal;
+}
+
+a {
+    cursor: pointer;
+}
+
+.required {
+    color: red;
+}
+
+.hint {
+    font-size: 0.8em;
+    color: #6a6a6a;
+    margin-top: -15px;
+    margin-bottom: 15px;
 }

@@ -11,6 +11,8 @@ import { HomeComponent } from '../home/home.component';
 import { NavComponent } from '../nav/nav.component';
 import { SearchComponent } from '../search/search.component';
 import { UserProfileComponent } from '../userprofile/userprofile.component';
+import { LoginComponent } from '../login/login.component';
+import { ForgotPasswordComponent } from "../login/forgotpassword.component";
 
 import { StorageService } from '../shared/storage.service';
 import { UIChangeNotificationService } from '../shared/uichangenotification.service';
@@ -18,6 +20,7 @@ import { SearchService } from '../search/search.service';
 
 import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awesome';
 import { NgxPaginationModule } from 'ngx-pagination';
+
 
 @NgModule({
   imports: [
@@ -35,7 +38,9 @@ import { NgxPaginationModule } from 'ngx-pagination';
     HomeComponent,
     NavComponent,
     SearchComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    LoginComponent,
+    ForgotPasswordComponent
   ],
   providers: [
     StorageService,
