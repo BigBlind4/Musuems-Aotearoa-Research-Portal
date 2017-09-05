@@ -42,17 +42,15 @@ nav {
 }
 
 footer {
-    border-top: 2px solid #FFB240;
-    background-color: #ffd08a;
+    background-color: rgb(251, 216, 178);
     border-radius: 5px;
     padding-bottom: 30px;
 }
 
 .searchResult {
-    /* padding: 5px 40px; */
     border-bottom: 1px solid #A64600;
-    /* width: 50%; */
-    margin: 10px 40px;
+    margin-top: 10px;
+    margin-bottom: 20px;
 }
 
 
@@ -65,10 +63,18 @@ footer {
 
 /*text settings*/
 
-h1,
-h2,
+
+/* h1,
+h2, */
+
 h3 {
-    padding: 20px 40px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    /* padding: 20px 40px; */
+}
+
+h4 {
+    padding-top: 20px;
 }
 
 .middle {
@@ -77,63 +83,33 @@ h3 {
 }
 
 .page {
-    min-height: 400px;
+    min-height: 768px;
 }
 
-
-/*link settings	*/
-
-
-/* #logLink {
-    float: right;
-    text-decoration: none;
-    text-align: right;
-    font-size: 25px;
-    margin-top: 5%;
-    margin-right: 35px;
-    font-color: white;
-    background-color: white;
-    padding: 5px 35px;
-    border-radius: 20px;
-} */
-
-
-/* .link {
-    margin-left: 15%;
-    text-align: center;
-    text-decoration: none;
-    border-top: 2px solid #A65600;
-    border-bottom: 2px solid #A65600;
-    padding: 10px;
-    border-radius: 15px;
-} */
-
-
-/* .link:hover {
-    font-weight: bold;
-    background-color: #FF9140;
-} */
-
-
-/* 
-a:visited {
-    font-color: #4013AF;
-} */
-
-
-/*text setting*/
-
-
-/* #nextTo {
-    margin-left: 110px;
-    margin-top: -55px;
-} */
-
-
-/* h1 {
-    font-size: 40px;
+.page .row {
+    padding-left: 40px;
+    padding-right: 40px;
 }
 
-h2 {
-    font-size: px;
-} */
+.nomargin {
+    margin: 0;
+}
+
+label {
+    font-weight: normal;
+}
+
+a {
+    cursor: pointer;
+}
+
+.required {
+    color: red;
+}
+
+.hint {
+    font-size: 0.8em;
+    color: #6a6a6a;
+    margin-top: -15px;
+    margin-bottom: 15px;
+}

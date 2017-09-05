@@ -4,15 +4,15 @@
             <input type="text" style="width:100%" placeholder="Enter your search..." [(ngModel)]='searchBar' />
         </div>
         <div class="one-third column">
-            <a style="cursor: pointer">
+            <a>
                 <fa name="search" size="2x" (click)="search()"></fa>
             </a>
         </div>
     </div>
     <div class="four columns nav">
         <ul>
-            <li><a><label>Message Board</label></a></li>
-            <li><a><label>Member Login</label></a></li>
+            <li><a>Message Board</a></li>
+            <li><a routerLink='/login'>Member Login</a></li>
         </ul>
     </div>
 </div>

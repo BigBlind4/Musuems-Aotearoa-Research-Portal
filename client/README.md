@@ -54,3 +54,5 @@ You can configure the default HTTP port in below script in `package.json` file.
 ```
 "start": "webpack-dev-server --inline --progress --port 9090"
 ```
+
+Note: you need to run `npm install` again if you change `package.json` file.

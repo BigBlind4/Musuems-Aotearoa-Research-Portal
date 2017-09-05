@@ -1,24 +1,18 @@
-<!-- <div class="row">
-    <div class="eleven columns">
-        <input type="text" style="width: 100%" id="searchinput" #searchBox>
-    </div>
-    <div class="one column">
-        <button type="submit" (click)="search(searchBox.value)">Search</button>
-    </div>
-</div> -->
 <div class="page">
     <div class="row">
         <h3>Search Results</h3>
-        <label class="middle" *ngIf="count!==0">{{count}} records found.</label>
-        <label class="middle" *ngIf="count===0">No records found.</label>
+        <label *ngIf="count!==0">{{count.toLocaleString()}} records found.</label>
+        <label *ngIf="count===0">No records found.</label>
 
     </div>
     <div class="row">
-        <div class="searchResult" *ngFor="let result of searchResults">
+        <div class="searchResult" *ngFor="let result of searchResults | paginate: {itemsPerPage: itemperpage, currentPage: p, totalItems: count}">
             <a [attr.href]="result.source_url" target="_blank">{{result.title}}</a>
-            <label>Author: {{result.creator}}</label>
-            <label>Decription: {{result.description}}</label>
+            <label *ngIf="result.creator.length!=0">Author: {{result.creator}}</label>
+            <label *ngIf="result.description!=null">{{result.description.length>206?result.description.substr(0,250)+'...' : result.description}}</label>
         </div>
-
+    </div>
+    <div class="row" *ngIf="count!==0">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
     </div>
 </div>
