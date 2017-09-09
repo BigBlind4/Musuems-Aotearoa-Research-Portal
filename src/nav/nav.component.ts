@@ -10,12 +10,21 @@ import { UIChangeNotificationService } from '../shared/uichangenotification.serv
 })
 export class NavComponent {
     protected searchBar: string = '';
+    protected memberlogin: boolean = false;
 
     constructor(private router: Router, private storageService: StorageService,
         private uiChangeNotificationService: UIChangeNotificationService) {}
 
+    ngOnInit() {
+        this.searchBar = '';
+        if (this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS) != null &&
+            String(this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS)) === '1') {
+                this.memberlogin = true; //upload function is only for member
+            }
+    }
+
     search() {
-        if(this.searchBar !== undefined && this.searchBar !== ''){
+        if (this.searchBar !== undefined && this.searchBar !== ''){
             this.storageService.removeStoredData(SESSION_KEYS.SEARCH_ITEM);
             this.storageService.setStoredData(SESSION_KEYS.SEARCH_ITEM, this.searchBar);
             if (this.router.url !== '/search') {
@@ -25,5 +34,11 @@ export class NavComponent {
                     { key: CHANGE_NOTIFICATION_KEYS.SEARCH_ITEM_CHANGED, value: 'true' });
             }
         }
+    }
+
+    logout() {
+        this.storageService.cleanStoredData();
+        this.memberlogin = false;
+        this.router.navigate(['/']);
     }
 }

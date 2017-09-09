@@ -107,9 +107,18 @@ a {
     color: red;
 }
 
+.error {
+    color: red;
+}
+
 .hint {
     font-size: 0.8em;
     color: #6a6a6a;
     margin-top: -15px;
     margin-bottom: 15px;
+}
+
+.usererror,
+.passerror {
+    margin-top: 8px;
 }

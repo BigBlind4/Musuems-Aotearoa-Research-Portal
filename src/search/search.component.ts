@@ -4,6 +4,7 @@ import { UIChangeNotificationService } from '../shared/uichangenotification.serv
 import { SESSION_KEYS, CHANGE_NOTIFICATION_KEYS } from '../shared/constants';
 import { StorageService } from '../shared/storage.service';
 import { Router } from '@angular/router';
+import { UserDataService } from '../shared/userdata.service';
 
 @Component({
   selector: 'search',
@@ -17,13 +18,16 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   private uiChangeNotificationServiceSubscriber: any;
   private searchItem: string;
+  private defaultSearchItem: string;
 
   constructor(private searchService: SearchService, private router: Router,
-    private uiChangeNotificationService: UIChangeNotificationService, private storageService: StorageService ) {}
+    private uiChangeNotificationService: UIChangeNotificationService, private storageService: StorageService,
+    private userDataService: UserDataService ) {}
 
   ngOnInit() {
     if (this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM) != null) {
-        this.searchItem = String(this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM));
+        this.defaultSearchItem = String(this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM));
+        this.searchItem = this.searchService.prepareSearchRequest(this.defaultSearchItem, this.p);
         this.search(this.searchItem);
     }else {
       this.router.navigate(['/home']);
@@ -33,7 +37,8 @@ export class SearchComponent implements OnInit, OnDestroy {
       this.uiChangeNotificationService.uiChanged.subscribe((data: { key: string, value: any }) => {
             if (data.key === CHANGE_NOTIFICATION_KEYS.SEARCH_ITEM_CHANGED) {
               if (this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM) != null) {
-                this.searchItem = String(this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM));
+                this.defaultSearchItem = String(this.storageService.getStoredData(SESSION_KEYS.SEARCH_ITEM));
+                this.searchItem = this.searchService.prepareSearchRequest(this.defaultSearchItem, this.p);
                 this.search(this.searchItem);
               }
             }}
@@ -45,11 +50,10 @@ export class SearchComponent implements OnInit, OnDestroy {
   }
 
   search(item: string) {
-    this.searchService.search(item, this.p).subscribe( data => {
+    this.userDataService.search(item).subscribe( data => {
       this.searchResults = data.search.results;
       this.count = data.search.result_count;
       this.itemperpage = data.search.per_page;
-
     });
 
     this.storageService.removeStoredData(SESSION_KEYS.SEARCH_ITEM);
@@ -57,8 +61,9 @@ export class SearchComponent implements OnInit, OnDestroy {
 
   pageChanged(p: number) {
     this.p = p;
-    this.searchService.search(this.searchItem, p).subscribe( data => {
-      this.searchResults = data.search.results;
+    this.searchItem = this.searchService.prepareSearchRequest(this.defaultSearchItem, p);
+    this.userDataService.search(this.searchItem).subscribe( data => {
+     this.searchResults = data.search.results;
     });
 
   }
