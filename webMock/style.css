@@ -46,6 +46,11 @@ footer{
 h1,h2, p{
 	padding: 5px 40px;
 }
+h2{font-size: 300px;}
+.title{
+	display: inline-block;
+}
+span{margin-left:150px;}
 /*link settings	*/
 #logLink{
 	float:right;

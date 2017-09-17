@@ -16,6 +16,7 @@ header{
 	background-color:#079aff;
 	border-radius:20px;
 	width: 100%;
+	height: 150px;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -51,14 +52,16 @@ footer{
 	}
 /*image settings*/
 .logo{
-	padding:10px 10px 10px 40px;
+	margin:15px 40px;
+	border-radius: 25px;
+	box-shadow: 2px 4px 20px 2px black;
 }
 .searchImage{
 	margin-right:25px;
 }
 
-/*text settings*/
-h1,h2, p{
+/*t
+margin-left:50px;1,h2, p{
 	padding: 5px 40px;
 }
 /*link settings	*/
@@ -97,6 +100,10 @@ h1,h2, p{
 a:visited{
  font-color:#4013AF;
 }
+.title{
+	display: inline-block;
+}
+span{margin-left:150px;}
 
 /*text setting*/
 h1,h2, h3{
