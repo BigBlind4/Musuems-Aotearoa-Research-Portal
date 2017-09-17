@@ -37,6 +37,7 @@ footer{
 	background-color: #ffd08a;
 	border-radius: 20px;
 	padding-bottom: 30px;
+	clear:all;
 }
 .row{
 	width:90%;
@@ -101,12 +102,24 @@ a:visited{
  font-color:#4013AF;
 }
 .title{
-	display: inline-block;
+	display: inline-flex;
 }
-span{margin-left:150px;}
+span{
+	margin-left:250px;
+}
+.input{e-size:25px;
+	width:85%;
+}
+.content{
+	vertical-align:top;
+}
+#enter{
+	margin-left:90%;
+	margin-bottom: 40px;
+}
 
 /*text setting*/
-h1,h2, h3{
+h1,h2, h3, label{
 	font-family: "Arial Black", Gadget, sans-serif;
 	font-weight: bold;
 	color:#A64600;
@@ -121,7 +134,7 @@ p{
 h1{
 	font-size:40px;
 }
-h2{
+h2, label{
 	font-size:30px;
 }
 h3{
