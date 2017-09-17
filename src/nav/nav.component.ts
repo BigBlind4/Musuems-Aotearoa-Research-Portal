@@ -12,15 +12,29 @@ export class NavComponent {
     protected searchBar: string = '';
     protected memberlogin: boolean = false;
 
+    private uiChangeNotificationServiceSubscriber: any;
+
     constructor(private router: Router, private storageService: StorageService,
         private uiChangeNotificationService: UIChangeNotificationService) {}
 
     ngOnInit() {
         this.searchBar = '';
+        this.uiChangeNotificationServiceSubscriber = 
+        this.uiChangeNotificationService.uiChanged.subscribe((data: { key: string, value: any }) => {
+              if (data.key === CHANGE_NOTIFICATION_KEYS.LOGIN_STATUS_CHANGED) {
+                if (this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS) != null) {
+                    if (data.value === '1') {
+                        this.memberlogin = true;
+                    }
+                }
+              }}
+        );
         if (this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS) != null &&
             String(this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS)) === '1') {
                 this.memberlogin = true; //upload function is only for member
-            }
+        }
+
+
     }
 
     search() {

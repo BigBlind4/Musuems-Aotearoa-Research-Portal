@@ -4,9 +4,10 @@ import { LoginModel } from '../models/user.model';
 import { LoginService } from './login.service';
 import { Router } from '@angular/router';
 import { StorageService } from '../shared/storage.service';
-import { SESSION_KEYS } from '../shared/constants';
+import { SESSION_KEYS, CHANGE_NOTIFICATION_KEYS } from '../shared/constants';
 import { Md5 } from 'ts-md5/dist/md5';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
+import { UIChangeNotificationService } from '../shared/uichangenotification.service';
 
 @Component({
   selector: 'login',
@@ -20,7 +21,8 @@ export class LoginComponent {
   protected loginError: boolean = false;
 
   constructor(private userDataService: UserDataService, private loginService: LoginService,
-    private router: Router, private storageService: StorageService, private formBuilder: FormBuilder) {}
+    private router: Router, private storageService: StorageService, private formBuilder: FormBuilder,
+    private uiChangeNotificationService: UIChangeNotificationService) {}
 
   ngOnInit() {
     this.user = '';
@@ -47,6 +49,8 @@ export class LoginComponent {
       }
       this.userDataService.login(this.userInfo).subscribe( data => {
         this.storageService.setStoredData(SESSION_KEYS.LOGIN_STATUS, '1');
+        this.uiChangeNotificationService.uiChanged.next(
+          { key: CHANGE_NOTIFICATION_KEYS.LOGIN_STATUS_CHANGED, value: '1' });
         this.router.navigate(['/']);
       },
       error => {

@@ -14,6 +14,10 @@ export class UserDataService {
     search(searchRequest: string) {
        // let body = JSON.stringify(searchRequest);
         return this.httpWrapperService.getRequest(API_METHODS.SEARCH, searchRequest);
+    }
 
+    uploadFile(formData: any) {
+        let body = JSON.stringify(formData);
+        return this.httpWrapperService.postRequest(API_METHODS.UPLOAD_FILE, body);
     }
 }

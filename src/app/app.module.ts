@@ -25,6 +25,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome/angular-font-awes
 import { NgxPaginationModule } from 'ngx-pagination';
 import { UploadComponent } from '../upload/upload.component';
 import { LoginService } from '../login/login.service';
+import { UploadService } from '../upload/upload.service';
 
 @NgModule({
   imports: [
@@ -53,7 +54,8 @@ import { LoginService } from '../login/login.service';
     SearchService,
     HttpWrapperService,
     UserDataService,
-    LoginService
+    LoginService,
+    UploadService
   ],
   bootstrap: [ AppComponent ]
 })

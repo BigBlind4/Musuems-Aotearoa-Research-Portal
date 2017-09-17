@@ -13,7 +13,7 @@ export class SearchService {
             return searchParam;
 
             // return this.http
-            //     //.get(`http://10.140.109.23:8089/search/recordpi_key=svowNJL8JgZVmBMhUzho&text=${term}`)
+            //     //.get(`http://10.140.109.23:8089/search/record/api_key=svowNJL8JgZVmBMhUzho&text=${term}`)
             //     .get(API_METHODS.SEARCH + `&page=${p}&text=${term}`)
             //     .map(response => response.json())
             //     .catch((error: any) => {
