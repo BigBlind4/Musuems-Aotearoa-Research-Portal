@@ -25,6 +25,8 @@ export class NavComponent {
                 if (this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS) != null) {
                     if (data.value === '1') {
                         this.memberlogin = true;
+                    } else {
+                        this.memberlogin = false;
                     }
                 }
               }}
@@ -32,6 +34,8 @@ export class NavComponent {
         if (this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS) != null &&
             String(this.storageService.getStoredData(SESSION_KEYS.LOGIN_STATUS)) === '1') {
                 this.memberlogin = true; //upload function is only for member
+        } else {
+            this.memberlogin = false;
         }
 
 

@@ -1,66 +1,75 @@
 <div class="page">
-    <div class="row">
-        <h3>Upload Materials</h3>
+    <div class="left accountnav">
+        <myaccountnav></myaccountnav>
     </div>
+    <div class="right">
+        <div class="row">
+            <h3>{{pageTitle}}</h3>
+        </div>
+        <form [formGroup]="uploadForm" enctype="multipart/form-data" novalidate>
+            <div class="row">
+                <div class="two columns">
+                    <label>Title: <span class="required">*</span></label>
+                </div>
+                <div class="nine columns">
+                    <input type="text" class="u-full-width" formControlName="title" />
+                    <label *ngIf="uploadForm.controls['title'].invalid && uploadForm.controls['title'].touched" [ngClass]="{required : !uploadForm.controls['title'].valid }">
+                    Please enter Title.</label>
+                </div>
 
-    <div class="row">
-        <div class="two columns">
-            <label>Title: </label>
-        </div>
-        <div class="nine columns">
-            <input type="text" class="u-full-width" />
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="two columns">
-            <label>Author: </label>
-        </div>
-        <div class="nine columns">
-            <input type="text" class="u-full-width" />
-            <label class="hint">Separate multiple authors by semicolon (;).</label>
-        </div>
-
-    </div>
-    <div class="row">
-        <div class="two columns">
-            <label>Description: </label>
-        </div>
-        <div class="nine columns">
-            <textarea class="u-full-width" style="resize: none"></textarea>
-        </div>
-    </div>
-    <div class="row">
-        <div class="two columns">
-            <label>Category: </label>
-        </div>
-        <div class="nine columns">
-            <div *ngFor="let category of CategoryList; let i = index">
-                <input type="checkbox" id="{{i}}" value="{{category.id}}" /> {{category.name}}
             </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="two columns">
-            <label>Attachment: </label>
-        </div>
-        <div class="nine columns">
-            <input #selectedFile id="selectedFile" type="file" name="selectedFile" class="u-full-width" (change)="fileChanged($event)">
-            <div class="w3-light-grey">
-                <div #progressBar class="w3-green" style="height:25px;width:0">{{progressBar.style.width}} </div>
-            </div>
-            <br/>
-            <button *ngIf="showUploadButton" (click)="removeFile()">Remove File</button>
-            <button *ngIf="showUploadButton" (click)="uploadFile()">Upload File</button>
-        </div>
-    </div>
-    <div class="row" *ngIf="uploadError">
-        <label class="error">There is something wrong with your input.</label>
-    </div>
-    <div class="row">
-        <div class="six columns">
-            <input class="button-primary" type="submit" value="Submit" (click)="submit()">
-        </div>
-    </div>
+            <div class="row">
+                <div class="two columns">
+                    <label>Author: </label>
+                </div>
+                <div class="nine columns">
+                    <input type="text" class="u-full-width" formControlName="author" />
+                    <label class="hint">Separate multiple authors by semicolon (;).</label>
+                </div>
 
+            </div>
+            <div class="row">
+                <div class="two columns">
+                    <label>Description: </label>
+                </div>
+                <div class="nine columns">
+                    <textarea class="u-full-width" style="resize: none" formControlName="description"></textarea>
+                </div>
+            </div>
+            <div class="row">
+                <div class="two columns">
+                    <label>Attachment:<span class="required">*</span></label>
+                </div>
+                <div class="nine columns">
+                    <div *ngIf="editMode">
+                        <a [attr.href]="sourceUrl" target="_blank">{{displayFileName}}</a>
+                        <a title="Remove file" *ngIf="displayFileName!==''">
+                            <fa name="trash" size="2x" (click)="removeFileCompletely()"></fa>
+                        </a>
+                    </div>
+                    <div *ngIf="this.displayFileName === ''">
+                        <input #selectedFile id="selectedFile" type="file" name="selectedFile" class="u-full-width" (change)="fileChanged($event)" required>
+                        <label [ngClass]="{'error' : fileError, 'success' : !fileError}">{{fileMessage}}</label>
+                        <div class="w3-light-grey">
+                            <div #progressBar class="w3-green" style="height:25px;width:0">{{progressBar.style.width}} </div>
+                        </div>
+                    </div>
+                    <br/>
+                    <!-- <button *ngIf="showUploadButton" (click)="removeFile()">Remove File</button> -->
+                    <button *ngIf="showUploadButton" (click)="uploadFile()">Upload File</button>
+                    <br/>
+                    <br/>
+                </div>
+
+            </div>
+            <div class="row">
+                <label [ngClass]="{'error' : uploadError, 'success' : !uploadError }">{{uploadMessage}}</label>
+            </div>
+            <div class="row">
+                <div class="six columns">
+                    <input class="button-primary" type="submit" value="Submit" (click)="submit()">
+                </div>
+            </div>
+        </form>
+    </div>
 </div>

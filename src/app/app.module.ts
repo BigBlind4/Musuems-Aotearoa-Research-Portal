@@ -14,6 +14,8 @@ import { SearchComponent } from '../search/search.component';
 import { UserProfileComponent } from '../userprofile/userprofile.component';
 import { LoginComponent } from '../login/login.component';
 import { ForgotPasswordComponent } from '../login/forgotpassword.component';
+import { MyAccountNavComponent } from '../nav/myaccountnav.component';
+import { UploadListComponent } from '../upload/uploadlist.component';
 
 import { StorageService } from '../shared/storage.service';
 import { UIChangeNotificationService } from '../shared/uichangenotification.service';
@@ -26,6 +28,7 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { UploadComponent } from '../upload/upload.component';
 import { LoginService } from '../login/login.service';
 import { UploadService } from '../upload/upload.service';
+import { UpdatePasswordComponent } from '../userprofile/updatepassword.component';
 
 @NgModule({
   imports: [
@@ -46,7 +49,10 @@ import { UploadService } from '../upload/upload.service';
     UserProfileComponent,
     LoginComponent,
     ForgotPasswordComponent,
-    UploadComponent
+    UploadComponent,
+    MyAccountNavComponent,
+    UploadListComponent,
+    UpdatePasswordComponent
   ],
   providers: [
     StorageService,

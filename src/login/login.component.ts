@@ -35,10 +35,11 @@ export class LoginComponent {
     });
   }
   login() {
+    this.loginError = false;
     this.user = this.loginForm.controls['user'].value;
     this.password = this.loginForm.controls['password'].value;
 
-    if (this.user !== undefined && this.user !== '' && this.password !== undefined && this.password !== '') {
+    if (this.user !== undefined && this.user.trim() !== '' && this.password !== undefined && this.password.trim() !== '') {
        this.userInfo = new LoginModel();
       // //this.userInfo.password = String(Md5.hashStr(this.password)); // password encryption
        this.userInfo.password = this.password;
@@ -48,10 +49,16 @@ export class LoginComponent {
         this.userInfo.username = this.user;
       }
       this.userDataService.login(this.userInfo).subscribe( data => {
-        this.storageService.setStoredData(SESSION_KEYS.LOGIN_STATUS, '1');
-        this.uiChangeNotificationService.uiChanged.next(
-          { key: CHANGE_NOTIFICATION_KEYS.LOGIN_STATUS_CHANGED, value: '1' });
-        this.router.navigate(['/']);
+        let status = String(data.status);
+        if(status === '1'){
+          this.storageService.setStoredData(SESSION_KEYS.LOGIN_STATUS, status);
+          this.storageService.setStoredData(SESSION_KEYS.USER_ID, data.userid);
+          this.uiChangeNotificationService.uiChanged.next(
+            { key: CHANGE_NOTIFICATION_KEYS.LOGIN_STATUS_CHANGED, value: status });
+          this.router.navigate(['/']);
+        } else {
+          this.loginError = true;
+        }
       },
       error => {
         this.loginError = true;

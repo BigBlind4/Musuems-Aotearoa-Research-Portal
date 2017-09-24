@@ -1,34 +1,51 @@
 <div class="page">
-    <div class="row">
-        <h3>User Profile</h3>
+    <div class="left accountnav">
+        <myaccountnav></myaccountnav>
     </div>
-    <div class="row">
-        <form>
-            <div class="twelve columns">
-                <label for="exampleEmailInput">Your email</label>
-                <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput" disabled>
+    <div class="right">
+        <div class="row">
+            <h3>User Profile</h3>
+
+        </div>
+        <form [formGroup]="profileForm" novalidate>
+            <div class="row">
+                <div class="twelve columns">
+                    <label>User Name <span class="required">*</span></label>
+                    <input class="u-full-width" type="text" formControlName="username">
+                    <label *ngIf="profileForm.controls['username'].invalid && profileForm.controls['username'].touched" [ngClass]="{required : !profileForm.controls['username'].valid  }">
+                            Username field is required.</label>
+                </div>
             </div>
-            <div class="twelve columns">
-                <label for="exampleEmailInput">Your Given Name</label>
-                <input class="u-full-width" type="text" placeholder="Rayna">
+            <div class="row">
+                <div class="twelve columns">
+                    <label>Email Address <span class="required">*</span></label>
+                    <input class="u-full-width" type="email" formControlName="email" (change)="checkEmail()">
+                    <label *ngIf="profileForm.controls['email'].value !=='' && !validEmail" class="error">Invalid Email Address</label>
+                    <label *ngIf="profileForm.controls['email'].invalid && profileForm.controls['email'].touched" [ngClass]="{required : !profileForm.controls['email'].valid } ">
+                            Email field is required.</label>
+                </div>
             </div>
-            <div class="twelve columns">
-                <label for="exampleEmailInput">Your Family Name</label>
-                <input class="u-full-width" type="text" placeholder="Feng">
+            <div class="row">
+                <div class="twelve columns">
+                    <label>First Name</label>
+                    <input class="u-full-width" type="text" formControlName="firstname">
+                </div>
             </div>
-            <div class="six columns nomargin">
-                <label for="exampleEmailInput">New Password</label>
-                <input class="u-full-width" type="password">
+            <div class="row">
+                <div class="twelve columns">
+                    <label>Last Name</label>
+                    <input class="u-full-width" type="text" formControlName="lastname">
+                </div>
             </div>
-            <div class="six columns">
-                <label for="exampleEmailInput">Confirm New Password</label>
-                <input class="u-full-width" type="password">
+            <div class="row">
+                <label class="success" [ngClass]="{ 'error': updateError} ">{{updateMessage}}</label>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <input class="button-primary" type="submit" value="Update" (click)="updateProfile()">
+                </div>
             </div>
 
-            <div class="twelve columns">
-                <input class="button-primary" type="submit" value="Update">
-            </div>
         </form>
-
     </div>
 </div>

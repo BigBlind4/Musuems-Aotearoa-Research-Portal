@@ -1,0 +1,23 @@
+<div class="page">
+    <div class="left accountnav">
+        <myaccountnav></myaccountnav>
+    </div>
+    <div class="right">
+        <div class="row">
+            <h3>My Uploads</h3>
+            <label *ngIf="count!==0">{{count.toLocaleString()}} records found.</label>
+            <label *ngIf="count===0">No upload record found.</label>
+            <label class="success" [ngClass]="{ 'error' : removeError}">{{removeMessage}}</label>
+        </div>
+        <div class="row">
+            <div class="uploadResult" *ngFor="let u of uploadlist">
+                <a (click)="getDetail(u.uploadid, u.fileid)">{{u.title}}</a>
+                <label *ngIf="u.author.length!=0">Author: {{u.author}}</label>
+                <label *ngIf="u.description!=null">{{u.description.length>206?u.description.substr(0,250)+'...' : u.description}}</label>
+                <a title="Remove">
+                    <fa name="trash" size="2x" (click)="removeUpload(u.uploadid)"></fa>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

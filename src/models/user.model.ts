@@ -1,4 +1,5 @@
 export class UserModel {
+    public userid: string = '';
     public username: string = '';
     public email: string = '';
     public firstname: string = '';
