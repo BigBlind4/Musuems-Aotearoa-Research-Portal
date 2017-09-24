@@ -1,0 +1,8 @@
+Business value - what is useful to the client - want and actual
+Working tested software - style checking - look towards machine style checking - will want unit testing and know the coverage
+Coding - pair switching often to increase knowledge, code review
+Tooling and automation - how often code is integrated, contunious integration, machine tested (unit tested)
+Command Board - burn down chart, use explicit user stories
+Self-organisation - high level of understanding across the team
+Design refactoring - CRC visual design, refactor to match
+Reflection - discussion about progress with client and team
