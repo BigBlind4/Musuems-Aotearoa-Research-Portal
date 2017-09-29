@@ -57,15 +57,15 @@ footer {
 /*image settings*/
 
 .logo {
-    padding: 10px 10px 10px 40px;
+    
+    margin:15px 40px;
+    border-radius: 15px;
+    box-shadow: 5px -5px 10px 2px black;
 }
 
 
 /*text settings*/
 
-
-/* h1,
-h2, */
 
 h3 {
     padding-top: 20px;
