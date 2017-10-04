@@ -1,0 +1,19 @@
+<div class="page">
+    <div class="left accountnav">
+        <myaccountnav></myaccountnav>
+    </div>
+    <div class="right">
+        <div class="row">
+            <h3>Approval List</h3>
+            <label *ngIf="count!==0">{{count.toLocaleString()}} records found.</label>
+            <label *ngIf="count===0">No upload record found.</label>
+            <!-- <label class="success" [ngClass]="{ 'error' : removeError}">{{removeMessage}}</label> -->
+        </div>
+        <div class="row">
+            <div class="uploadResult" *ngFor="let a of approvalList">
+                <a (click)="getDetail()">{{a.title}}</a>
+                <label>By {{a.username}}</label>
+            </div>
+        </div>
+    </div>
+</div>

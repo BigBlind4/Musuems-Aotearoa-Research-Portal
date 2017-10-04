@@ -50,7 +50,8 @@ export class LoginComponent {
       }
       this.userDataService.login(this.userInfo).subscribe( data => {
         let status = String(data.status);
-        if(status === '1'){
+        if (status === '1') {
+          this.storageService.setStoredData(SESSION_KEYS.ROLE, String(data.role));
           this.storageService.setStoredData(SESSION_KEYS.LOGIN_STATUS, status);
           this.storageService.setStoredData(SESSION_KEYS.USER_ID, data.userid);
           this.uiChangeNotificationService.uiChanged.next(

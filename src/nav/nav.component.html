@@ -12,7 +12,7 @@
     <div class="five columns nav">
         <ul>
             <li *ngIf="memberlogin"><a (click)="logout()">Logout</a></li>
-            <li *ngIf="memberlogin"><a>Message Board</a></li>
+            <li><a routerLink='/postlist'>Message Board</a></li>
             <li *ngIf="!memberlogin"><a routerLink='/login'>Member Login</a></li>
             <li *ngIf="memberlogin"><a routerLink='/userprofile'>My Account</a></li>
             <!-- <li *ngIf="memberlogin"><a routerLink='/upload'>Upload</a></li> -->

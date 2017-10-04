@@ -29,6 +29,13 @@ import { UploadComponent } from '../upload/upload.component';
 import { LoginService } from '../login/login.service';
 import { UploadService } from '../upload/upload.service';
 import { UpdatePasswordComponent } from '../userprofile/updatepassword.component';
+import { PostListComponent } from '../messageboard/postlist.component';
+import { MyTopicComponent } from '../messageboard/mytopic.component';
+import { NewPostComponent } from '../messageboard/newpost.component';
+import { PostDetailComponent } from '../messageboard/postdetail.component';
+import { ApprovalListComponent } from '../approvallist/approvallist.component';
+import { ApprovalDetailComponent } from '../approvallist/approvaldetail.component';
+import { PostService } from '../messageboard/post.service';
 
 @NgModule({
   imports: [
@@ -52,7 +59,13 @@ import { UpdatePasswordComponent } from '../userprofile/updatepassword.component
     UploadComponent,
     MyAccountNavComponent,
     UploadListComponent,
-    UpdatePasswordComponent
+    UpdatePasswordComponent,
+    PostListComponent,
+    NewPostComponent,
+    MyTopicComponent,
+    PostDetailComponent,
+    ApprovalListComponent,
+    ApprovalDetailComponent
   ],
   providers: [
     StorageService,
@@ -61,7 +74,8 @@ import { UpdatePasswordComponent } from '../userprofile/updatepassword.component
     HttpWrapperService,
     UserDataService,
     LoginService,
-    UploadService
+    UploadService,
+    PostService
   ],
   bootstrap: [ AppComponent ]
 })

@@ -1,0 +1,70 @@
+<div class="page">
+    <div class="left accountnav">
+        <myaccountnav></myaccountnav>
+    </div>
+    <div class="right">
+        <div class="row">
+            <h3>Details</h3>
+        </div>
+
+        <div class="row">
+            <div class="two columns">
+                <label>Title:</label>
+            </div>
+            <div class="nine columns">
+                <label>{{title}}</label>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="two columns">
+                <label>Username: </label>
+            </div>
+            <div class="nine columns">
+                <label>{{username}}</label>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="two columns">
+                <label>Details: </label>
+            </div>
+            <div class="nine columns">
+                <label>{{details}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="two columns">
+                <label>Tags: </label>
+            </div>
+            <div class="nine columns">
+                <label>{{tags}}</label>
+            </div>
+        </div>
+        <div class="row">
+            <div class="two columns">
+                <label>Attachment: </label>
+            </div>
+            <div class="nine columns">
+                <a [attr.href]="sourceUrl" target="_blank">{{displayFileName}}</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="two columns">
+                <label>Comments: </label>
+            </div>
+            <div class="nine columns">
+                <textarea class="u-full-width"></textarea>
+            </div>
+        </div>
+        <div class="row">
+            <label [ngClass]="{'error' : approveError, 'success' : !approveError }">{{approveMessage}}</label>
+        </div>
+        <div class="row">
+            <div class="twelve columns">
+                <input class="button-primary" type="submit" value="Approve" (click)="approve()">
+                <input class="button-delete" type="submit" value="Reject" (click)="reject()">
+            </div>
+        </div>
+    </div>
+</div>

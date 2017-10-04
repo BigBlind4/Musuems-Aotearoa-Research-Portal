@@ -4,6 +4,6 @@
         <li><a routerLink='/updatepassword'>Update Password</a></li>
         <li><a routerLink='/uploadlist'>My Uploads</a></li>
         <li><a routerLink='/upload'>New Upload</a></li>
-        <li>My Messages</li>
+        <li *ngIf="isAdmin"><a routerLink="/approvallist">Approval List</a></li>
     </ul>
 </div>

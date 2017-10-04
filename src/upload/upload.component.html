@@ -9,7 +9,7 @@
         <form [formGroup]="uploadForm" enctype="multipart/form-data" novalidate>
             <div class="row">
                 <div class="two columns">
-                    <label>Title: <span class="required">*</span></label>
+                    <label>Title:<span class="required">*</span></label>
                 </div>
                 <div class="nine columns">
                     <input type="text" class="u-full-width" formControlName="title" />
@@ -57,17 +57,31 @@
                     <br/>
                     <!-- <button *ngIf="showUploadButton" (click)="removeFile()">Remove File</button> -->
                     <button *ngIf="showUploadButton" (click)="uploadFile()">Upload File</button>
+
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="two columns">
+                    <label>Terms and Conditions:<span class="required">*</span></label>
+                </div>
+                <div class="nine columns">
+                    <textarea class="u-full-width" style="resize: none"></textarea>
+                    <input type="checkbox" formControlName="tc"> I accept the above terms and conditions.
+                    <label *ngIf="uploadForm.controls['tc'].touched && uploadForm.controls['tc'].value !== true" [ngClass]="{required : !uploadForm.controls['tc'].value}">
+                        You have to accept the terms and conditions to continue.</label>
                     <br/>
                     <br/>
                 </div>
-
             </div>
             <div class="row">
                 <label [ngClass]="{'error' : uploadError, 'success' : !uploadError }">{{uploadMessage}}</label>
             </div>
             <div class="row">
-                <div class="six columns">
-                    <input class="button-primary" type="submit" value="Submit" (click)="submit()">
+                <div class="twelve columns">
+                    <input class="button-primary" type="submit" value="Save" (click)="submit()">
+                    <input class="button-primary" type="submit" value="Submit for review" (click)="submitForReview()">
+                    <input *ngIf="editMode" class="button-delete" type="submit" value="Delete" (click)="removeUpload()">
                 </div>
             </div>
         </form>

@@ -1,0 +1,26 @@
+<div class="page">
+    <div class="row">
+        <div class="twelve columns">
+            <div class="seven columns">
+                <h3>Forum Posts</h3>
+            </div>
+            <div class="five columns postbuttons">
+                <button routerLink="/mytopic">My Topic</button>
+                <button routerLink="/newpost">New Post</button>
+            </div>
+        </div>
+        <label *ngIf="count!==undefined && count!==0">{{count.toLocaleString()}} records found.</label>
+        <label *ngIf="count===0">No post found.</label>
+
+    </div>
+    <div class="row">
+        <div class="searchResult" *ngFor="let result of postList | paginate: {itemsPerPage: itemperpage, currentPage: p, totalItems: count}">
+            <a (click)="getPostByTopicId(result.topicid)">{{result.title}}</a>
+            <label>By: {{result.username}} on {{result.lastupdate}}</label>
+            <label *ngIf="result.details!=null">{{result.details.length>206?result.details.substr(0,250)+'...' : result.details}}</label>
+        </div>
+    </div>
+    <div class="row" *ngIf="count!==undefined && count!==0">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>

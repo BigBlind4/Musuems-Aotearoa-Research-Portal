@@ -1,0 +1,20 @@
+<div class="page">
+    <div class="row">
+        <h3>My Topics</h3>
+        <label *ngIf="count!==undefined && count!==0">{{count.toLocaleString()}} records found.</label>
+        <label *ngIf="count===0">No records found.</label>
+    </div>
+
+    <div class="row">
+        <div class="searchResult" *ngFor="let result of myTopicList | paginate: {itemsPerPage: itemperpage, currentPage: p, totalItems: count}">
+            <label>{{result.title}} <i>published at {{result.lastupdate}}</i></label>
+            <label *ngIf="result.details!=null">{{result.details.length>206?result.details.substr(0,250)+'...' : result.details}}</label>
+
+            <a (click)="editTopic(result.topicid, true)">Click to Edit</a>
+
+        </div>
+    </div>
+    <div class="row" *ngIf="count!==undefined && count!==0">
+        <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
+    </div>
+</div>

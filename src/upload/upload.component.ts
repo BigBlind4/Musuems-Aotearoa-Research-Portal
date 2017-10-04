@@ -46,7 +46,8 @@ export class UploadComponent {
     this.uploadForm = this.formBuilder.group({
       title: ['', Validators.required],
       author: [''],
-      description: ['']
+      description: [''],
+      tc: ['', Validators.required]
     });
     
     this.reset();
@@ -177,15 +178,15 @@ export class UploadComponent {
       material.userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
     }
     let title = this.uploadForm.controls['title'].value;
-    const fileInput: HTMLInputElement = this.selectedFile.nativeElement;
-    if (fileInput.value === '') {
-      this.fileError = true;
-      this.fileMessage = 'Please select file to upload';
-      return;
-    }
-    
-    if (title !== undefined && title.trim() !== '') {
-      
+    let tcchecked = this.uploadForm.controls['tc'].value;
+    if (title !== undefined && title.trim() !== '' && tcchecked !== '' && tcchecked) {
+      const fileInput: HTMLInputElement = this.selectedFile.nativeElement;
+      if (fileInput.value === '') {
+        this.fileError = true;
+        this.fileMessage = 'Please select file to upload';
+        return;
+      }
+
       material.title = title;
       material.author = this.uploadForm.controls['author'].value;
       material.description = this.uploadForm.controls['description'].value;
@@ -229,6 +230,28 @@ export class UploadComponent {
           });
         }
     
+    }
+  }
+
+  submitForReview() {
+
+  }
+
+  removeUpload () {
+    if (this.editMode) {
+      let removeReq = new UploadModel();
+      removeReq.userid = this.storageService.getStoredData(SESSION_KEYS.USER_ID);
+      removeReq.uploadid = this.uploadid;
+  
+      this.userDataService.removeUpload(removeReq).subscribe(data => {
+        if (data != null ) {
+          this.router.navigate(['/uploadlist']);
+        }
+      },
+      error => {
+        this.uploadError = true;
+        this.uploadMessage = error._body;
+      });
     }
   }
 

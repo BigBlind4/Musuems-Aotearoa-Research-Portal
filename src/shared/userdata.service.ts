@@ -53,4 +53,58 @@ export class UserDataService {
         let body = JSON.stringify(removeRequest);
         return this.httpWrapperService.postRequest(API_METHODS.REMOVE_UPLOAD, body);
     }
+
+    createPost(postRequest: any) {
+        let body = JSON.stringify(postRequest);
+        return this.httpWrapperService.postRequest(API_METHODS.CREATE_POST, body);
+    }
+
+    getPostList(postRequest: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_POST_LIST, postRequest);
+    }
+
+    getPostListByUserId (postRequest: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_POST_LIST_BY_USER_ID, postRequest);
+    }
+    getPostDetailByTopicId(topicid: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_POST_DETAIL_BY_TOPIC_ID, topicid);
+    }
+
+    addComments (commentReq: any) {
+        let body = JSON.stringify(commentReq);
+        return this.httpWrapperService.postRequest(API_METHODS.ADD_COMMENTS, body);
+    }
+
+    // deleteComments(commentReq: any) {
+    //     let body = JSON.stringify(commentReq);
+    //     return this.httpWrapperService.postRequest(API_METHODS.DELETE_COMMENTS, body);
+    // }
+
+    deleteComments(commentid: string) {
+        //let body = JSON.stringify(commentReq);
+        return this.httpWrapperService.getRequest(API_METHODS.DELETE_COMMENTS, commentid);
+    }
+
+    updatePost(postRequest: any) {
+        let body = JSON.stringify(postRequest);
+        return this.httpWrapperService.postRequest(API_METHODS.UPDATE_POST, body);
+    }
+
+    getComments(commentRequest: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_COMMENTS, commentRequest);
+    }
+
+    // deletePost(postRequest: any) {
+    //     let body = JSON.stringify(postRequest);
+    //     return this.httpWrapperService.postRequest(API_METHODS.DELETE_POST, body);
+    // }
+
+    deletePost(topicid: string) {
+        //let body = JSON.stringify(postRequest);
+        return this.httpWrapperService.getRequest(API_METHODS.DELETE_POST, topicid);
+    }
+
+    getPostEditDetail(topicReq: any) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_POST_EDIT_DETAIL, topicReq);
+    }
 }

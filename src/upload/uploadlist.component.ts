@@ -12,16 +12,16 @@ import { UploadModel } from '../models/upload.model';
 })
 export class UploadListComponent  {
   protected uploadlist: string = '';
-  protected removeError: boolean = false;
-  protected removeMessage: string = '';
+  // protected removeError: boolean = false;
+  // protected removeMessage: string = '';
   protected count: number = 0;
 
   constructor(private storageService: StorageService, private userDataService: UserDataService,
     private router: Router) {}
 
   ngOnInit() {
-    this.removeError = false;
-    this.removeMessage = '';
+    // this.removeError = false;
+    // this.removeMessage = '';
 
     if (this.storageService.getStoredData(SESSION_KEYS.USER_ID) != null) {
       let userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
@@ -29,9 +29,7 @@ export class UploadListComponent  {
       this.userDataService.getUploadList(userid).subscribe(data => {
         if (data != null){
           this.uploadlist = data;
-          
           this.count = this.uploadlist.length;
-          
         }
       });
     }
@@ -42,18 +40,18 @@ export class UploadListComponent  {
     this.router.navigate(['/upload', userid, uploadid, fileid]);
   }
 
-  removeUpload(uploadid: string) {
-    let removeReq = new UploadModel();
-    removeReq.userid = this.storageService.getStoredData(SESSION_KEYS.USER_ID);
-    removeReq.uploadid = uploadid;
+  // removeUpload(uploadid: string) {
+  //   let removeReq = new UploadModel();
+  //   removeReq.userid = this.storageService.getStoredData(SESSION_KEYS.USER_ID);
+  //   removeReq.uploadid = uploadid;
 
-    this.userDataService.removeUpload(removeReq).subscribe(data => {
-      this.uploadlist = data;
-      this.count = this.uploadlist.length;
-    },
-    error => {
-      this.removeError = true;
-      this.removeMessage = error._body;
-    });
-  }
+  //   this.userDataService.removeUpload(removeReq).subscribe(data => {
+  //     this.uploadlist = data;
+  //     this.count = this.uploadlist.length;
+  //   },
+  //   error => {
+  //     this.removeError = true;
+  //     this.removeMessage = error._body;
+  //   });
+  // }
 }

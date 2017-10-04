@@ -156,3 +156,26 @@ a {
 .success {
     color: green;
 }
+
+.button-delete {
+    color: #fff !important;
+    background-color: #e04747 !important;
+    border-color: #e04747 !important;
+}
+
+.button-delete:hover {
+    background-color: #e02626 !important;
+}
+
+.postbuttons {
+    padding-top: 20px;
+    text-align: right;
+}
+
+.postbuttons button {
+    margin-left: 10px;
+}
+
+.alignright {
+    text-align: right;
+}

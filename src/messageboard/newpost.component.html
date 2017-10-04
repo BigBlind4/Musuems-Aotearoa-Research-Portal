@@ -1,0 +1,51 @@
+<div class="page">
+    <div class="row">
+        <h3>{{postTitle}}</h3>
+    </div>
+
+    <div class="row">
+        <form [formGroup]="newPostForm" enctype="multipart/form-data" novalidate>
+            <div class="row">
+                <div class="two columns">
+                    <label>Title:<span class="required">*</span></label>
+                </div>
+                <div class="nine columns">
+                    <input type="text" class="u-full-width" formControlName="title" />
+                    <label *ngIf="newPostForm.controls['title'].invalid && newPostForm.controls['title'].touched" [ngClass]="{required : !newPostForm.controls['title'].valid }">
+                        Please enter the Title.</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="two columns">
+                    <label>Details: </label>
+                </div>
+                <div class="nine columns">
+                    <textarea class="u-full-width" formControlName="details"></textarea>
+                    <label *ngIf="newPostForm.controls['details'].invalid && newPostForm.controls['details'].touched" [ngClass]="{required : !newPostForm.controls['details'].valid }">
+                            Please enter the Details.</label>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="two columns">
+                    <label>Tags: </label>
+                </div>
+                <div class="nine columns">
+                    <input type="text" class="u-full-width" formControlName="tags" />
+                    <label class="hint">Separate multiple tags by semicolon (;).</label>
+                </div>
+            </div>
+            <div class="row">
+                <label [ngClass]="{'error' : postError, 'success' : !postError }">{{postMessage}}</label>
+            </div>
+            <div class="row">
+                <div class="twelve columns">
+                    <button class="button-primary" (click)="post()">{{postButton}}</button>
+                    <!-- <input class="button-primary" type="submit" value="Post" (click)="post()"> -->
+                    <input *ngIf="editMode" class="button-delete" type="submit" value="Delete" (click)="deletePost()">
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
