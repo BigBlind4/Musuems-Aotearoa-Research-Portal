@@ -1,0 +1,127 @@
+CREATE OR REPLACE FUNCTION major_c() RETURNS TRIGGER AS $major_c$
+    DECLARE mCode_tmp char(6);
+    BEGIN
+        IF (TG_OP = 'DELETE') THEN
+            SELECT mCode into mCode_tmp FROM STUDENT WHERE mCode = OLD.mCode;
+            IF mCode_tmp IS NULL THEN
+                RETURN OLD;
+            ELSIF mCode_tmp IS NOT NULL THEN
+                RAISE EXCEPTION 'Cannot delete this tuple when the MCODE is referenced as a foreign key by the table STUDENT.';
+                RETURN NULL;
+            END IF;
+        ELSIF (TG_OP = 'UPDATE') THEN
+            SELECT mCode into mCode_tmp FROM student WHERE mCode = NEW.mCode;
+            IF mCode_tmp IS NULL THEN
+                RETURN NEW;
+            ELSIF mCode_tmp IS NOT NULL THEN
+                RAISE EXCEPTION 'Cannot update this tuple when the MCODE is referenced as a foreign key by the table STUDENT.';
+                RETURN NULL;
+            END IF;
+        ELSIF (TG_OP = 'INSERT') THEN
+            SELECT mCode into mCode_tmp FROM STUDENT WHERE mCode = NEW.mCode;
+            IF mCode_tmp IS NULL THEN
+                RETURN NEW;
+            ELSIF mCode_tmp IS NOT NULL THEN
+                RAISE EXCEPTION 'Cannot add this tuple because the MCODE is duplicated as a primary key in the table Major.';
+                RETURN NULL;
+            END IF;
+        END IF;
+        RETURN NULL;
+    END;
+$major_c$ LANGUAGE plpgsql;
+
+CREATE TRIGGER major_c BEFORE INSERT OR DELETE OR UPDATE ON major FOR EACH ROW EXECUTE PROCEDURE major_c();
+
+CREATE OR REPLACE FUNCTION student_c() RETURNS TRIGGER AS $student_c$
+    DECLARE mCode_tmp char(6);
+    BEGIN
+        IF (TG_OP = 'UPDATE') THEN
+            SELECT mCode into mCode_tmp FROM major WHERE mCode = NEW.mCode;
+            IF mCode_tmp IS NULL THEN
+                RAISE EXCEPTION 'Cannot update this tuple when the MCODE is referenced as a foreign key by the table STUDENT.';
+                RETURN NULL;
+            ELSIF mCode_tmp IS NOT NULL THEN
+                RETURN NEW;
+            END IF;
+        ELSIF (TG_OP = 'INSERT') THEN
+            SELECT mCode into mCode_tmp FROM major WHERE mCode = NEW.mCode;
+            IF mCode_tmp IS NULL THEN
+                RAISE EXCEPTION 'Cannot add this tuple because the MCODE is duplicated as a primary key in the table Major.';
+                RETURN NULL;
+            ELSIF mCode_tmp IS NOT NULL THEN
+                RETURN NEW;
+            END IF;
+        END IF;
+        RETURN NULL;
+    END;
+$student_c$ LANGUAGE plpgsql;
+CREATE TRIGGER student_c BEFORE INSERT OR DELETE OR UPDATE ON student FOR EACH ROW EXECUTE PROCEDURE student_c();
+
+\i ~/Desktop/vic/304/assignment3/swen304_a3_q1.sql
+\i ~/Desktop/vic/304/assignment3/swen304_a3_q1_test.txt
+
+\i ~/Desktop/vic/304/assignment3/swen304_a3_q2.sql
+\i ~/Desktop/vic/304/assignment3/swen304_a3_q2_test.txt
+
+
+CREATE OR REPLACE FUNCTION coursepass(In_sId int, In_cId char, In_year int, In_grade char, In_graduationDate date) RETURNS boolean AS $coursepass$
+    BEGIN
+        PERFORM grade FROM result WHERE sid=$1 and cid=$2 and grade<'D';
+        IF NOT FOUND THEN
+            INSERT INTO result values ($1,$2,$3,$4);
+            IF $4<'D' THEN
+                UPDATE student SET pointsearned = pointsearned + points FROM course WHERE cid=$2;
+                PERFORM pointsearned FROM student WHERE sid=$1 and pointsearned >=360;
+                IF FOUND THEN
+                    INSERT INTO graduate VALUES ($1,$5);
+                    RETURN TRUE;
+                END IF;
+            END IF;
+        ELSE
+            INSERT INTO result values ($1,$2,$3,$4);
+            RETURN FALSE;
+        END IF;
+        RETURN FALSE;
+    END;
+$coursepass$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION coursepass(In_sId int, In_cId char, In_year int, In_grade char, In_graduationDate date) RETURNS boolean AS $coursepass$
+    BEGIN
+        INSERT INTO result values ($1,$2,$3,$4);
+        PERFORM grade FROM result WHERE sid=$1 and cid=$2 and grade<'D';
+        IF FOUND THEN
+            RETURN FALSE;
+        ELSE
+            PERFORM grade FROM result WHERE sid=$1 and cid=$2 and grade<'D';
+            IF FOUND THEN
+                UPDATE student SET pointsearned = pointsearned + points FROM course WHERE $2=cid;
+                PERFORM pointsearned FROM student WHERE $1=sid and pointsearned >=360;
+                IF FOUND THEN
+                    INSERT INTO graduate VALUES ($1,$5);
+                    RETURN TRUE;
+                END IF;
+            END IF;
+        END IF;
+    END;
+$coursepass$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE FUNCTION coursepass(In_sId int, In_cId char, In_year int, In_grade char, In_graduationDate date) RETURNS boolean AS $coursepass$
+     BEGIN
+        PERFORM grade FROM result WHERE sid=$1 and cid=$2 and grade<'D';
+        IF FOUND THEN
+        INSERT INTO result values ($1,$2,$3,$4);
+        RETURN FALSE;
+        ELSE
+            INSERT INTO result values ($1,$2,$3,$4);
+            IF $4<'D' THEN
+                UPDATE student SET pointsearned = pointsearned + points FROM course WHERE $2=cid;
+                PERFORM pointsearned FROM student WHERE $1=sid and pointsearned >=360;
+                IF FOUND THEN
+                    INSERT INTO graduate VALUES ($1,$5);
+                    RETURN TRUE;
+                END IF;
+            END IF;
+        END IF;
+       RETURN FALSE;
+     END;
+$coursepass$ LANGUAGE plpgsql;
