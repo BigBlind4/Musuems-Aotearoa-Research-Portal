@@ -4,13 +4,13 @@ package nz.ac.victoria.ecs.glams.vo;
  * Created by limengheng on 25/09/17.
  */
 public class UserProfiles {
-    private String emial;
+    private String email;
     private String name;
     private String firstname;
     private String lastname;
 
-    public String getEmial() {
-        return emial;
+    public String getEmail() {
+        return email;
     }
 
     public String getName() {
@@ -25,8 +25,8 @@ public class UserProfiles {
         return lastname;
     }
 
-    public void setEmial(String emial) {
-        this.emial = emial;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setName(String name) {
