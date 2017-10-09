@@ -2,6 +2,8 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 06/09/17.
+ * Stores information about a message and its status  
+ * NEED review by Zedd
  */
 public class ActionResp {
     private Integer status;

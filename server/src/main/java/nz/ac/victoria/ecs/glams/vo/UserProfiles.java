@@ -2,6 +2,7 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 25/09/17.
+ * Stores information for user profile page 
  */
 public class UserProfiles {
     private String email;

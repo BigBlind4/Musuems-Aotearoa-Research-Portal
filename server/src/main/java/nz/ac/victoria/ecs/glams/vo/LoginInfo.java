@@ -2,6 +2,7 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 06/09/17.
+ * stores login status and related user
  */
 public class LoginInfo {
     private User user;

@@ -2,6 +2,7 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 24/09/17.
+ * Stores details of uploaded files 
  */
 public class FileDetails {
     private Integer userid;
