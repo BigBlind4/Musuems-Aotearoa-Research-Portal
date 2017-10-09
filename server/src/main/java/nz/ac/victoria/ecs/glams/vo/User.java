@@ -2,6 +2,7 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 06/09/17.
+ * Represents a user, stores user information
  */
 public class User {
     private Integer userid;

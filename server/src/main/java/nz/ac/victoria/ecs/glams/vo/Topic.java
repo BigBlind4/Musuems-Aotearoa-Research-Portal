@@ -2,6 +2,7 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 02/10/17.
+ * Represents a topic on the message board.
  */
 public class Topic {
     private int topicid;
