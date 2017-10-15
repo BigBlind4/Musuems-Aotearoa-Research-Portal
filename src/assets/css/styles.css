@@ -179,3 +179,7 @@ a {
 .alignright {
     text-align: right;
 }
+
+textarea {
+    min-height: 120px;
+}

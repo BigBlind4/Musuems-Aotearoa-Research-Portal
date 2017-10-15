@@ -11,11 +11,12 @@
         </div>
         <div class="row">
             <div class="uploadResult" *ngFor="let u of uploadlist">
-                <label>Status: </label> {{u.status}}
+                <label><i><b>Status: {{u.uploadstatus}}</b></i></label>
+                <label *ngIf="u.comment.length!=0"><i><b>Comments: {{u.comment}}</b></i></label>
                 <a (click)="getDetail(u.uploadid, u.fileid)">{{u.title}}</a>
                 <label *ngIf="u.author.length!=0">Author: {{u.author}}</label>
                 <label *ngIf="u.description!=null">{{u.description.length>206?u.description.substr(0,250)+'...' : u.description}}</label>
-                <button (click)="getDetail(u.uploadid, u.fileid)">Edit</button>
+                <a (click)="getDetail(u.uploadid, u.fileid)">Edit Upload</a>
                 <!-- <a title="Remove">
                     <fa name="trash" size="2x" (click)="removeUpload(u.uploadid)"></fa>
                 </a> -->

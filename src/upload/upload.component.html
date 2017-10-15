@@ -7,6 +7,24 @@
             <h3>{{pageTitle}}</h3>
         </div>
         <form [formGroup]="uploadForm" enctype="multipart/form-data" novalidate>
+            <div class="row" *ngIf="editMode">
+                <div class="two columns">
+                    <label>Status:</label>
+                </div>
+                <div class="nine columns">
+                    <label><i><b>{{uploadstatus}}</b></i></label>
+                </div>
+
+            </div>
+            <div class="row" *ngIf="editMode && comment.length!=0">
+                <div class="two columns">
+                    <label>Comments:</label>
+                </div>
+                <div class="nine columns">
+                    <label><i><b>{{comment}}</b></i></label>
+                </div>
+
+            </div>
             <div class="row">
                 <div class="two columns">
                     <label>Title:<span class="required">*</span></label>
@@ -33,7 +51,7 @@
                     <label>Description: </label>
                 </div>
                 <div class="nine columns">
-                    <textarea class="u-full-width" style="resize: none" formControlName="description"></textarea>
+                    <textarea class="u-full-width" style="resize: vertical" rows="5" formControlName="description"></textarea>
                 </div>
             </div>
             <div class="row">
@@ -66,7 +84,7 @@
                     <label>Terms and Conditions:<span class="required">*</span></label>
                 </div>
                 <div class="nine columns">
-                    <textarea class="u-full-width" style="resize: none"></textarea>
+                    <textarea class="u-full-width" style="resize: vertical" [innerHTML]="tnc" rows="10"></textarea>
                     <input type="checkbox" formControlName="tc"> I accept the above terms and conditions.
                     <label *ngIf="uploadForm.controls['tc'].touched && uploadForm.controls['tc'].value !== true" [ngClass]="{required : !uploadForm.controls['tc'].value}">
                         You have to accept the terms and conditions to continue.</label>
@@ -79,9 +97,10 @@
             </div>
             <div class="row">
                 <div class="twelve columns">
-                    <input class="button-primary" type="submit" value="Save" (click)="submit()">
-                    <input class="button-primary" type="submit" value="Submit for review" (click)="submitForReview()">
-                    <input *ngIf="editMode" class="button-delete" type="submit" value="Delete" (click)="removeUpload()">
+                    <button class="button-primary" type="submit" (click)="save('Saved')">{{btnSave}}</button>
+                    <input class="button-primary" type="submit" value="Submit for review" (click)="save('In review')">
+                    <button *ngIf="editMode" class="button-delete" type="submit" (click)="removeUpload()">Delete</button>
+
                 </div>
             </div>
         </form>

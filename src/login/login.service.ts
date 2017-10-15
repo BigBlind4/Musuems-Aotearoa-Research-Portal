@@ -15,4 +15,8 @@ export class LoginService {
 
         return false;
     }
+
+    prepareUserRequest (userid: string) {
+        return '?userid=' + userid;
+    }
 }

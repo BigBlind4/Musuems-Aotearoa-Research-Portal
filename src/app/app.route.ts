@@ -32,5 +32,6 @@ export const appRoutes: Routes = [
     { path: 'postdetail/:topicid', component: PostDetailComponent },
     { path: 'approvallist', component: ApprovalListComponent },
     { path: 'approvaldetail', component: ApprovalDetailComponent },
+    { path: 'approvaldetail/:userid/:uploadid', component: ApprovalDetailComponent },
     { path: '', redirectTo: '/home', pathMatch: 'full'}
 ]

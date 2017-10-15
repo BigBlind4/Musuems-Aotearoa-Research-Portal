@@ -10,10 +10,13 @@
             <!-- <label class="success" [ngClass]="{ 'error' : removeError}">{{removeMessage}}</label> -->
         </div>
         <div class="row">
-            <div class="uploadResult" *ngFor="let a of approvalList">
-                <a (click)="getDetail()">{{a.title}}</a>
-                <label>By {{a.username}}</label>
+            <div class="uploadResult" *ngFor="let a of approvalList | paginate: {itemsPerPage: itemperpage, currentPage: p, totalItems: count}">
+                <a (click)="getDetail(a.userid, a.uploadid)">{{a.title}}</a>
+                <label><i>Uploaded on {{a.lastupdate}}</i></label>
             </div>
+        </div>
+        <div class="row" *ngIf="count!==undefined && count!==0">
+            <pagination-controls (pageChange)="pageChanged($event)"></pagination-controls>
         </div>
     </div>
 </div>

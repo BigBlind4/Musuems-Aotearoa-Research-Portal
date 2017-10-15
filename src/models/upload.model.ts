@@ -5,6 +5,9 @@ export class UploadModel {
   public fileid: string = '';
   public userid: string = '';
   public uploadid: string = '';
+  public uploadstatus: string = '';
+  public comment: string = '';
+  public action: string = '';
 }
 
 export class FileModel {

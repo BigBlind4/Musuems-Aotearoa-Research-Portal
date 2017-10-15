@@ -51,6 +51,7 @@ export class LoginComponent {
       this.userDataService.login(this.userInfo).subscribe( data => {
         let status = String(data.status);
         if (status === '1') {
+          console.log(data.role);
           this.storageService.setStoredData(SESSION_KEYS.ROLE, String(data.role));
           this.storageService.setStoredData(SESSION_KEYS.LOGIN_STATUS, status);
           this.storageService.setStoredData(SESSION_KEYS.USER_ID, data.userid);

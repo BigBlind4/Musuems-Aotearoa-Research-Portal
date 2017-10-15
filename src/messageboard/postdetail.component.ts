@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'; 
 import { StorageService } from '../shared/storage.service';
-import { SESSION_KEYS, ROLES } from '../shared/constants';
+import { SESSION_KEYS, ROLES , DEFAULT_VALUES} from '../shared/constants';
 import { UserDataService } from '../shared/userdata.service';
 import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
@@ -15,7 +15,7 @@ export class PostDetailComponent  {
     protected commentList: string = '';
     protected count: number = 0;
     protected commentMessage: string = '';
-    protected itemperpage: number = 2;
+    protected itemperpage: number = DEFAULT_VALUES.ITEM_PER_PAGE;
     protected p: number = 1;
 
     protected title: string = '';
@@ -44,6 +44,7 @@ export class PostDetailComponent  {
       this.isAdmin = false;
       if (this.storageService.getStoredData(SESSION_KEYS.ROLE) != null &&
         this.storageService.getStoredData(SESSION_KEYS.ROLE) === ROLES.ADMIN) {
+          console.log(this.storageService.getStoredData(SESSION_KEYS.ROLE));
           this.isAdmin = true;
       } else {
         this.isAdmin = false;
@@ -56,7 +57,7 @@ export class PostDetailComponent  {
          if (params != null && params.topicid !== '') {
            this.storageService.setStoredData(SESSION_KEYS.TOPIC_ID, params.topicid);
            this.topicid = params.topicid;
-           this.getPostByTopicId(params.topicid, 2,  1);
+           this.getPostByTopicId(params.topicid, DEFAULT_VALUES.ITEM_PER_PAGE,  1);
            if (params.editmode) {
              this.editMode = true;
            } else {
@@ -144,6 +145,9 @@ export class PostDetailComponent  {
       this.userDataService.deletePost(this.topicid).subscribe(data => {
         if (data != null) {
           this.commentMessage = data.message;
+          if (data.status === 0) {
+            this.router.navigate(['/postlist']);
+          }
         }
       });
 

@@ -12,12 +12,13 @@ import { ActivatedRoute, Router } from '@angular/router';
   templateUrl: './upload.component.html'
 })
 export class UploadComponent {
-  protected pageTitle: string = 'New Upload';
+  protected pageTitle: string = '';
   protected editMode: boolean = false;
   protected sourceUrl: string = '';
   protected selectedCat: any = [];
   protected fileError: boolean = false;
   protected uploadError: boolean = false;
+  protected btnSave: string = '';
 
   private fileResult: any;
   protected showUploadButton: boolean = false;
@@ -26,8 +27,10 @@ export class UploadComponent {
   protected fileid: string;
   protected uploadid: string;
   protected userid: string;
-
+  protected tnc: string = '';
   protected displayFileName: string = '';
+  protected uploadstatus: string = '';
+  protected comment: string = '';
 
   uploadForm: FormGroup;
   uploadedFile: FileModel;
@@ -41,6 +44,7 @@ export class UploadComponent {
     }
   
   ngOnInit() {
+    this.tnc = 'The Agreement contains the entire understanding and agreement between the Licensor and Licensee relating to its subject matter. This Agreement is governed by, and is to be construed in accordance with, New Zealand law.';
     this.uploadedFile = new FileModel();
 
     this.uploadForm = this.formBuilder.group({
@@ -50,6 +54,9 @@ export class UploadComponent {
       tc: ['', Validators.required]
     });
     
+    this.pageTitle = 'New Upload';
+    this.btnSave = 'Save';
+
     this.reset();
     this.activatedRoute.params.subscribe(params => {
      // this.pageTitle = 'Edit Upload';
@@ -60,6 +67,7 @@ export class UploadComponent {
       this.userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
       if (this.uploadid !== undefined && this.uploadid !== '') {
         this.pageTitle = 'Edit Upload';
+        this.btnSave = 'Update';
         this.getFileDetails(this.userid, this.uploadid);
         this.editMode = true;
       } 
@@ -74,6 +82,8 @@ export class UploadComponent {
         this.uploadForm.controls['description'].setValue(data.description);
         this.displayFileName = data.fileid;
         this.sourceUrl = data.resource;
+        this.uploadstatus = data.uploadstatus;
+        this.comment = data.comment;
     },
     error => {
       console.log(error._body);
@@ -172,7 +182,7 @@ export class UploadComponent {
   }
 
 
-  submit() {
+  save(uploadstatus: string) {
     let material: UploadModel = new UploadModel();
     if (this.storageService.getStoredData(SESSION_KEYS.USER_ID) != null) {
       material.userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
@@ -180,16 +190,17 @@ export class UploadComponent {
     let title = this.uploadForm.controls['title'].value;
     let tcchecked = this.uploadForm.controls['tc'].value;
     if (title !== undefined && title.trim() !== '' && tcchecked !== '' && tcchecked) {
-      const fileInput: HTMLInputElement = this.selectedFile.nativeElement;
-      if (fileInput.value === '') {
-        this.fileError = true;
-        this.fileMessage = 'Please select file to upload';
-        return;
-      }
+      // const fileInput: HTMLInputElement = this.selectedFile.nativeElement;
+      // if (fileInput.value === '') {
+      //   this.fileError = true;
+      //   this.fileMessage = 'Please select file to upload';
+      //   return;
+      // }
 
       material.title = title;
       material.author = this.uploadForm.controls['author'].value;
       material.description = this.uploadForm.controls['description'].value;
+      material.uploadstatus = uploadstatus;
 
       if (this.editMode) {
           material.fileid = this.fileid;
@@ -233,9 +244,50 @@ export class UploadComponent {
     }
   }
 
-  submitForReview() {
+  // submitForReview() {
+  //   let material: UploadModel = new UploadModel();
+  //   if (this.storageService.getStoredData(SESSION_KEYS.USER_ID) != null) {
+  //     material.userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
+  //   }
+  //   let title = this.uploadForm.controls['title'].value;
+  //   let tcchecked = this.uploadForm.controls['tc'].value;
+  //   if (title !== undefined && title.trim() !== '' && tcchecked !== '' && tcchecked) {
+  //     const fileInput: HTMLInputElement = this.selectedFile.nativeElement;
+  //     if (fileInput.value === '') {
+  //       this.fileError = true;
+  //       this.fileMessage = 'Please select file to upload';
+  //       return;
+  //     }
 
-  }
+  //     material.title = title;
+  //     material.author = this.uploadForm.controls['author'].value;
+  //     material.description = this.uploadForm.controls['description'].value;
+
+  //     if (this.storageService.getStoredData(SESSION_KEYS.FILE_ID) != null) {
+  //       material.fileid = String(this.storageService.getStoredData(SESSION_KEYS.FILE_ID) );
+  //     }
+  //     if(this.storageService.getStoredData(SESSION_KEYS.UPLOAD_ID) != null) {
+  //       material.uploadid = String(this.storageService.getStoredData(SESSION_KEYS.UPLOAD_ID) );
+  //     }
+  //     material.uploadstatus = 'In review';
+  //     this.userDataService.upload(material).subscribe( data => {
+  //       this.uploadMessage = data.message;
+  //       if (String(data.status) === '1') {
+  //         this.uploadError = false;
+  //         this.storageService.removeStoredData(SESSION_KEYS.FILE_ID);
+  //         this.storageService.removeStoredData(SESSION_KEYS.UPLOAD_ID);
+  //       // this.reset();
+  //       location.reload();
+  //       } else {
+  //         this.uploadError = true;
+  //       }
+  //     },
+  //     error => {
+  //       this.uploadError = true;
+  //       this.uploadMessage = error._body;
+  //     });
+  //   }
+  // }
 
   removeUpload () {
     if (this.editMode) {
@@ -245,7 +297,13 @@ export class UploadComponent {
   
       this.userDataService.removeUpload(removeReq).subscribe(data => {
         if (data != null ) {
-          this.router.navigate(['/uploadlist']);
+          this.uploadMessage = data.message;
+          if (String(data.status) === '1') {
+            this.uploadError = false;
+            this.router.navigate(['/uploadlist']);
+          } else {
+            this.uploadError = true;
+          }
         }
       },
       error => {

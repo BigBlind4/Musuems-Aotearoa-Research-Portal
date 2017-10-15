@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'; 
 import { StorageService } from '../shared/storage.service';
-import { SESSION_KEYS } from '../shared/constants';
+import { SESSION_KEYS , DEFAULT_VALUES} from '../shared/constants';
 import { UserDataService } from '../shared/userdata.service';
 import { Router } from '@angular/router';
 import { PostService } from './post.service';
@@ -13,7 +13,7 @@ export class PostListComponent  {
   protected postList: string = '';
   protected count: number = 0;
   protected p: number = 1;
-  protected itemperpage: number = 2;
+  protected itemperpage: number = DEFAULT_VALUES.ITEM_PER_PAGE;
   private postRequest: string;
 
   constructor(private storageService: StorageService, private userDataService: UserDataService,

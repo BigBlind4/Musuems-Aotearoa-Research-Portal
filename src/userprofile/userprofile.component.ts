@@ -35,7 +35,20 @@ export class UserProfileComponent  {
 
       if(this.storageService.getStoredData(SESSION_KEYS.USER_ID) != null) {
         this.userid = String(this.storageService.getStoredData(SESSION_KEYS.USER_ID));
+        this.getUserProfile(this.userid);
       }
+    }
+
+    getUserProfile(userid: string) {
+      userid = this.loginService.prepareUserRequest(userid);
+      this.userDataService.getUserProfile(userid).subscribe(data => {
+        if (data != null) {
+          this.profileForm.controls['username'].setValue(data.username);
+          this.profileForm.controls['email'].setValue(data.email);
+          this.profileForm.controls['firstname'].setValue(data.firstname);
+          this.profileForm.controls['lastname'].setValue(data.lastname);
+        }
+      });
     }
 
     checkEmail() {

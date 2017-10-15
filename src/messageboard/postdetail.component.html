@@ -3,15 +3,16 @@
         <button (click)="deletePost()">Delete Post</button>
     </div>
     <div class="row">
-        <label>{{title}}</label>
+        <label><b>{{title}}</b></label>
         <label><i>By {{username}}, {{lastupldatedate}}</i></label>
     </div>
     <div class="row">
-        <label>{{details}}</label>
+        <div [innerText]="details"></div>
     </div>
     <div class="row">
         <label>Tags: {{tags}}</label>
     </div>
+    <p></p>
     <div class="row">
         <label>Add comments</label>
         <textarea class="u-full-width" [(ngModel)]="comments"></textarea>

@@ -36,6 +36,7 @@ import { PostDetailComponent } from '../messageboard/postdetail.component';
 import { ApprovalListComponent } from '../approvallist/approvallist.component';
 import { ApprovalDetailComponent } from '../approvallist/approvaldetail.component';
 import { PostService } from '../messageboard/post.service';
+import { ApproveService } from '../approvallist/approve.service';
 
 @NgModule({
   imports: [
@@ -75,7 +76,8 @@ import { PostService } from '../messageboard/post.service';
     UserDataService,
     LoginService,
     UploadService,
-    PostService
+    PostService,
+    ApproveService
   ],
   bootstrap: [ AppComponent ]
 })

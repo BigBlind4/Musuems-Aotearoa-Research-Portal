@@ -1,6 +1,6 @@
 import { Component } from '@angular/core'; 
 import { StorageService } from '../shared/storage.service';
-import { SESSION_KEYS } from '../shared/constants';
+import { SESSION_KEYS, DEFAULT_VALUES } from '../shared/constants';
 import { UserDataService } from '../shared/userdata.service';
 import { Router } from '@angular/router';
 import { PostService } from './post.service';
@@ -14,7 +14,7 @@ export class MyTopicComponent  {
 
     protected count: number;
     protected myTopicList: string;
-    protected itemperpage: number = 2;
+    protected itemperpage: number = DEFAULT_VALUES.ITEM_PER_PAGE;
     protected p: number = 1;
 
     constructor(private storageService: StorageService, private userDataService: UserDataService,
@@ -48,4 +48,7 @@ export class MyTopicComponent  {
       this.router.navigate(['/newpost', topicid, editmode]);
     }
 
+    getPostByTopicId(topicid: string) {
+      this.router.navigate(['/postdetail', topicid]);
+   }
 }

@@ -7,7 +7,8 @@
 
     <div class="row">
         <div class="searchResult" *ngFor="let result of myTopicList | paginate: {itemsPerPage: itemperpage, currentPage: p, totalItems: count}">
-            <label>{{result.title}} <i>published at {{result.lastupdate}}</i></label>
+            <a (click)="getPostByTopicId(result.topicid)">{{result.title}} </a>
+            <label><i>Published at {{result.lastupdate}}</i></label>
             <label *ngIf="result.details!=null">{{result.details.length>206?result.details.substr(0,250)+'...' : result.details}}</label>
 
             <a (click)="editTopic(result.topicid, true)">Click to Edit</a>

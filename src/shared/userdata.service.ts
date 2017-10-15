@@ -90,21 +90,33 @@ export class UserDataService {
         return this.httpWrapperService.postRequest(API_METHODS.UPDATE_POST, body);
     }
 
-    getComments(commentRequest: string) {
-        return this.httpWrapperService.getRequest(API_METHODS.GET_COMMENTS, commentRequest);
-    }
-
-    // deletePost(postRequest: any) {
-    //     let body = JSON.stringify(postRequest);
-    //     return this.httpWrapperService.postRequest(API_METHODS.DELETE_POST, body);
+    // getComments(commentRequest: string) {
+    //     return this.httpWrapperService.getRequest(API_METHODS.GET_COMMENTS, commentRequest);
     // }
 
     deletePost(topicid: string) {
-        //let body = JSON.stringify(postRequest);
         return this.httpWrapperService.getRequest(API_METHODS.DELETE_POST, topicid);
     }
 
     getPostEditDetail(topicReq: any) {
         return this.httpWrapperService.getRequest(API_METHODS.GET_POST_EDIT_DETAIL, topicReq);
+    }
+
+    getApprovalList(approvalReq: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_APPROVAL_LIST, approvalReq);
+    }
+
+    uploadAction(approvalReq: any) {
+        let body = JSON.stringify(approvalReq);
+        return this.httpWrapperService.postRequest(API_METHODS.UPLOAD_ACTION, body);
+    }
+
+    updatePassword(updateReq: any) {
+        let body = JSON.stringify(updateReq);
+        return this.httpWrapperService.postRequest(API_METHODS.UPDATE_PASSWORD, body);
+    }
+
+    getUserProfile(userid: string) {
+        return this.httpWrapperService.getRequest(API_METHODS.GET_USER_PROFILE, userid);
     }
 }
