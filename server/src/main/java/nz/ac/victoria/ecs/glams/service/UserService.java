@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by limengheng on 06/09/17.
+ * Created by lijian5 on 06/09/17.
  * Services concerning users and user profiles
  */
 
