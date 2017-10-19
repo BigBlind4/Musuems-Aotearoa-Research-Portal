@@ -5,10 +5,13 @@ import nz.ac.victoria.ecs.glams.vo.Topic;
 import nz.ac.victoria.ecs.glams.vo.User;
 import org.springframework.stereotype.Service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /**
  * Created by limengheng on 06/09/17.
+ * Services concerning message board topics and comments (add, delete, etc.)
  */
 
 @Service
@@ -18,6 +21,17 @@ public class TopicService {
 
     public List<Topic> getTopics(Integer perpage, Integer page) {
         List<Topic> list = new ArrayList<Topic>();
+        Collections.sort(TOPICS, new Comparator<Topic>() {
+            public int compare(Topic arg0, Topic arg1) {
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
         for (int i = perpage * (page + 1) - perpage + 1; i < perpage * (page + 1) + 1; i++) {
             if (i <= TOPICS.size()) {
                 list.add(TOPICS.get(i - 1));
@@ -25,7 +39,13 @@ public class TopicService {
         }
         Collections.sort(list, new Comparator<Topic>() {
             public int compare(Topic arg0, Topic arg1) {
-                return arg0.getLastupdate().compareTo(arg1.getLastupdate());
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
             }
         });
         return list;
@@ -70,7 +90,7 @@ public class TopicService {
         return true;
     }
 
-    public boolean updateTopic(Topic topic){
+    public boolean updateTopic(Topic topic) {
         for (Topic t : TOPICS) {
             if (t.getTopicid() == topic.getTopicid()) {
                 t.setTitle(topic.getTitle());
@@ -114,6 +134,17 @@ public class TopicService {
     }
 
     public List<Topic> getTopicsByUserId(Integer userid, Integer perpage, Integer page) {
+        Collections.sort(TOPICS, new Comparator<Topic>() {
+            public int compare(Topic arg0, Topic arg1) {
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
         List<Topic> allList = new ArrayList<Topic>();
         List<Topic> subList = new ArrayList<Topic>();
         for (Topic t : TOPICS) {
@@ -123,7 +154,13 @@ public class TopicService {
         }
         Collections.sort(allList, new Comparator<Topic>() {
             public int compare(Topic arg0, Topic arg1) {
-                return arg0.getLastupdate().compareTo(arg1.getLastupdate());
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
             }
         });
         for (int i = perpage * (page + 1) - perpage + 1; i < perpage * (page + 1) + 1; i++) {
@@ -136,6 +173,17 @@ public class TopicService {
     }
 
     public List<Comments> getComments(Integer topicid, Integer perpage, Integer page) {
+        Collections.sort(COMMENTS, new Comparator<Comments>() {
+            public int compare(Comments arg0, Comments arg1) {
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
         List<Comments> allList = new ArrayList<Comments>();
         List<Comments> subList = new ArrayList<Comments>();
         for (Comments c : COMMENTS) {
@@ -145,7 +193,13 @@ public class TopicService {
         }
         Collections.sort(allList, new Comparator<Comments>() {
             public int compare(Comments arg0, Comments arg1) {
-                return arg0.getLastupdate().compareTo(arg1.getLastupdate());
+                if (getTimeStamp(arg0.getCreatetime()) > getTimeStamp(arg1.getCreatetime())) {
+                    return 1;
+                }
+                if (getTimeStamp(arg0.getCreatetime()) == getTimeStamp(arg1.getCreatetime())) {
+                    return 0;
+                }
+                return -1;
             }
         });
         for (int i = perpage * (page + 1) - perpage + 1; i < perpage * (page + 1) + 1; i++) {
@@ -167,5 +221,39 @@ public class TopicService {
         topic.setTopicid(TOPICS.size() + 1);
         TOPICS.add(topic);
         return true;
+    }
+
+    public Long getTimeStamp(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
+    }
+
+    public static void main(String[] args) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time = (System.currentTimeMillis());
+        String d = format.format(time);
+
+        Date date = null;
+        try {
+            date = format.parse(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Format To String(Date):" + d);
+        System.out.println("Format To Date:" + date);
+
+
+        try {
+            date = format.parse(d);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        System.out.print("Format To times:" + date.getTime());
     }
 }

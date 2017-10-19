@@ -1,22 +1,113 @@
 package nz.ac.victoria.ecs.glams.service;
 
 import nz.ac.victoria.ecs.glams.vo.FileDetails;
+import nz.ac.victoria.ecs.glams.vo.Topic;
+import nz.ac.victoria.ecs.glams.vo.UploadActionReq;
 import nz.ac.victoria.ecs.glams.vo.UserFile;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 /**
  * Created by limengheng on 06/09/17.
+ * Services concerning files and file details (add, delete, etc.)
  */
 
 @Service
 public class FileStoreService {
     private static final HashMap<Integer, List<UserFile>> UserFiles = new HashMap<Integer, List<UserFile>>();
     private static final HashMap<Integer, List<FileDetails>> UserFileDetails = new HashMap<Integer, List<FileDetails>>();
+    private static final HashMap<String, UploadActionReq> ApproveComments = new HashMap<String, UploadActionReq>();
+
+
+    public String getCommentByUploadId(String uploadid) {
+        if (ApproveComments.size() > 0) {
+            if (ApproveComments.get(uploadid) != null) {
+                return ApproveComments.get(uploadid).getComment();
+            }
+        }
+        return "";
+    }
+
+    public boolean addApproveComments(UploadActionReq ua) {
+        ApproveComments.put(ua.getUploadid(), ua);
+        return true;
+    }
+
+    public boolean updateStatus(UploadActionReq ua) {
+        List<FileDetails> list = UserFileDetails.get(ua.getUserid());
+        for (FileDetails fileDetails : list) {
+            if (ua.getUploadid().equals(fileDetails.getUploadid())) {
+                String status = null;
+                if (ua.getAction().equals("approve")) {
+                    fileDetails.setUploadstatus("Published");
+                } else if (ua.getAction().equals("reject")) {
+                    fileDetails.setUploadstatus("Rejected");
+                }
+
+            }
+        }
+        return true;
+    }
+
+    public boolean updateStatus(Integer userid, String uploadid, String ustatus) {
+        List<FileDetails> list = UserFileDetails.get(userid);
+        for (FileDetails fileDetails : list) {
+            if (uploadid.equals(fileDetails.getUploadid())) {
+                fileDetails.setUploadstatus(ustatus);
+            }
+        }
+        return true;
+    }
+
+    public Integer getFilesCount(String uploadStatus) {
+        List<FileDetails> allList = new ArrayList<FileDetails>();
+        for (Map.Entry<Integer, List<FileDetails>> entry : UserFileDetails.entrySet()) {
+            List<FileDetails> list = entry.getValue();
+            for (FileDetails fileDetails : list) {
+                if (uploadStatus.equals(fileDetails.getUploadstatus())) {
+                    allList.add(fileDetails);
+                }
+            }
+        }
+        return allList.size();
+    }
+
+    public List<FileDetails> getInReviewFiles(Integer perpage, Integer page) {
+        List<FileDetails> allList = new ArrayList<FileDetails>();
+        for (Map.Entry<Integer, List<FileDetails>> entry : UserFileDetails.entrySet()) {
+            List<FileDetails> list = entry.getValue();
+            for (FileDetails fileDetails : list) {
+                if ("In review".equals(fileDetails.getUploadstatus())) {
+                    allList.add(fileDetails);
+                }
+            }
+        }
+        Collections.sort(allList, new Comparator<FileDetails>() {
+            public int compare(FileDetails arg0, FileDetails arg1) {
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        List<FileDetails> subList = new ArrayList<FileDetails>();
+        if (allList.size() > perpage) {
+            for (int i = perpage * (page + 1) - perpage + 1; i < perpage * (page + 1) + 1; i++) {
+                if (i <= allList.size()) {
+                    subList.add(allList.get(i - 1));
+                }
+            }
+        } else {
+            subList.addAll(allList);
+        }
+        return subList;
+    }
 
     public boolean addFile(UserFile file) {
         List<UserFile> filesList = UserFiles.get(file.getUserid());
@@ -35,7 +126,19 @@ public class FileStoreService {
     }
 
     public List<FileDetails> getDetailsList(Integer userId) {
-        return UserFileDetails.get(userId);
+        List<FileDetails> allList = UserFileDetails.get(userId);
+        Collections.sort(allList, new Comparator<FileDetails>() {
+            public int compare(FileDetails arg0, FileDetails arg1) {
+                if (getTimeStamp(arg0.getLastupdate()) > getTimeStamp(arg1.getLastupdate())) {
+                    return -1;
+                }
+                if (getTimeStamp(arg0.getLastupdate()) == getTimeStamp(arg1.getLastupdate())) {
+                    return 0;
+                }
+                return 1;
+            }
+        });
+        return allList;
     }
 
     public UserFile getFile(Integer userId, String fileId) {
@@ -149,5 +252,17 @@ public class FileStoreService {
             }
         }
         System.out.println(list);
+    }
+
+
+    public Long getTimeStamp(String dateStr) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Date date = null;
+        try {
+            date = format.parse(dateStr);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date.getTime();
     }
 }

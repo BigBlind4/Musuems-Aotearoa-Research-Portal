@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 /**
  * Created by limengheng on 09/08/17.
+ * Controller for search actions, interfaces with digitalNZ search api
  */
 @RestController
 @RequestMapping(value = "/search")
@@ -19,20 +20,19 @@ public class SearchController {
 
     private static final Logger LOGGER = LogManager.getLogger(SearchController.class);
 
-    @RequestMapping(value = "/hello", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String hello(@RequestBody String body,
-                         HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println(body);
-        LOGGER.info("hello,im log4j!");
-        return "{result: hello}";
-    }
-
+    /**
+     * Description: Search topics from digitalNZ
+     * @httpMethod get
+     * @mediaType text
+     * @param apiKey
+     * @param text
+     * @param page
+     */
     @RequestMapping(value = "/records", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getRecords(@RequestParam("api_key") String apiKey,
                          @RequestParam("text") String text,
                          @RequestParam("page") Integer page,
                          HttpServletResponse resp) {
-        LOGGER.info("hello,im log4j!");
         System.out.println("apiKey="+apiKey);
         System.out.println("text="+text);
         System.out.println("page="+page);

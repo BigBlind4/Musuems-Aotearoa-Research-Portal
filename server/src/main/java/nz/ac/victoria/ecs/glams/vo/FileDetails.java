@@ -2,16 +2,51 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 24/09/17.
- * Stores details of uploaded files 
  */
 public class FileDetails {
     private Integer userid;
+//    private String username;
     private String fileid;
     private String uploadid;
     private String title;
     private String author;
     private String description;
     private String category;
+    private String uploadstatus;
+    private String createtime;
+    private String lastupdate;
+
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+
+    public String getCreatetime() {
+        return createtime;
+    }
+
+    public String getLastupdate() {
+        return lastupdate;
+    }
+
+    public void setCreatetime(String createtime) {
+        this.createtime = createtime;
+    }
+
+    public void setLastupdate(String lastupdate) {
+        this.lastupdate = lastupdate;
+    }
+
+    public String getUploadstatus() {
+        return uploadstatus;
+    }
+
+    public void setUploadstatus(String uploadstatus) {
+        this.uploadstatus = uploadstatus;
+    }
 
     public String getUploadid() {
         return uploadid;

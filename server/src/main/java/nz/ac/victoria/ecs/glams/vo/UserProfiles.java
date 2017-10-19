@@ -2,16 +2,15 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 25/09/17.
- * Stores information for user profile page 
  */
 public class UserProfiles {
-    private String email;
+    private String emial;
     private String name;
     private String firstname;
     private String lastname;
 
-    public String getEmail() {
-        return email;
+    public String getEmial() {
+        return emial;
     }
 
     public String getName() {
@@ -26,8 +25,8 @@ public class UserProfiles {
         return lastname;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmial(String emial) {
+        this.emial = emial;
     }
 
     public void setName(String name) {

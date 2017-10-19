@@ -5,6 +5,7 @@ package nz.ac.victoria.ecs.glams.controller;
 import com.google.gson.Gson;
 import nz.ac.victoria.ecs.glams.service.AuthenticationService;
 import nz.ac.victoria.ecs.glams.service.FileStoreService;
+import nz.ac.victoria.ecs.glams.service.UserService;
 import nz.ac.victoria.ecs.glams.vo.*;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.logging.log4j.LogManager;
@@ -18,10 +19,13 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by limengheng on 09/08/17.
+ * Controller for file actions (upload, etc.)
  */
 @RestController
 @RequestMapping(value = "/file")
@@ -30,13 +34,20 @@ public class FileController {
     private AuthenticationService aService;
     @Autowired
     private FileStoreService fsService;
+
+    @Autowired
+    private UserService userService;
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * Description: Upload file to server
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadFile(@RequestBody String body,
                              HttpServletRequest req, HttpServletResponse resp) {
-        LOGGER.info("hello,im log4j!");
-        System.out.println("I‘m here!");
         UserFile uf = new Gson().fromJson(body, UserFile.class);
         UploadFileResp uploadResp = new UploadFileResp();
         if (!uf.getContent().isEmpty()) {
@@ -89,16 +100,24 @@ public class FileController {
         return response;
     }
 
+    /**
+     * Description: Upload file details to server
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/uploadDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadDetails(@RequestBody String body,
                                 HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
         FileDetails fd = new Gson().fromJson(body, FileDetails.class);
         ActionResp actionResp = new ActionResp();
         Boolean rs = false;
         actionResp.setStatus(0);
         actionResp.setMessage("failed");
         if (fd.getUserid() != null) {
+            fd.setCreatetime(getDate());
+            fd.setLastupdate(fd.getCreatetime());
+//            fd.setUsername(userService.getUserName(fd.getUserid()));
             rs = fsService.addDetail(fd);
             if (rs) {
                 actionResp.setStatus(1);
@@ -112,10 +131,15 @@ public class FileController {
         return response;
     }
 
+    /**
+     * Description: Update file details
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/updateDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateDetails(@RequestBody String body,
                                 HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
         FileDetails fd = new Gson().fromJson(body, FileDetails.class);
         ActionResp actionResp = new ActionResp();
         Boolean rs = false;
@@ -124,6 +148,7 @@ public class FileController {
         if (fd.getUserid() != null) {
             rs = fsService.updateDetails(fd);
             if (rs) {
+                fsService.updateStatus(fd.getUserid(),fd.getUploadid(),fd.getUploadstatus());
                 actionResp.setStatus(1);
                 actionResp.setMessage("You have successfully updated the material.");
             }
@@ -135,24 +160,98 @@ public class FileController {
         return response;
     }
 
+    /**
+     * Description: Get file details list
+     * @httpMethod get
+     * @mediaType text
+     * @param userid
+     */
     @RequestMapping(value = "/getUploadDetailsList", method = RequestMethod.GET)
     public String details(@RequestParam("userid") Integer userid,
                           HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
         List<FileDetails> list = fsService.getDetailsList(userid);
+        List<DetailsResp> dList = new ArrayList<DetailsResp>();
+        for(FileDetails fileDetails : list){
+            DetailsResp detailsResp = new DetailsResp();
+            detailsResp.setUserid(fileDetails.getUserid());
+            detailsResp.setFileid(fileDetails.getFileid());
+            detailsResp.setUploadid(fileDetails.getUploadid());
+            detailsResp.setTitle(fileDetails.getTitle());
+            detailsResp.setAuthor(fileDetails.getAuthor());
+            detailsResp.setCategory(fileDetails.getCategory());
+            detailsResp.setDescription(fileDetails.getDescription());
+            detailsResp.setUsername(userService.getUserName(fileDetails.getUserid()));
+            detailsResp.setComment(fsService.getCommentByUploadId(fileDetails.getUploadid()));
+            detailsResp.setUploadstatus(fileDetails.getUploadstatus());
+            dList.add(detailsResp);
+        }
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
-        String response = new Gson().toJson(list);
+        String response = new Gson().toJson(dList);
         return response;
     }
 
+    /**
+     * Description: Get the upload list which is needed to review by admin
+     * @httpMethod get
+     * @param perpage
+     * @param page
+     */
+    @RequestMapping(value = "/getApprovalList", method = RequestMethod.GET)
+    public String getApprovalList(@RequestParam("perpage") Integer perpage,
+                          @RequestParam("page") Integer page,
+                          HttpServletRequest req, HttpServletResponse resp) {
+        List<FileDetails> list = fsService.getInReviewFiles(perpage,page -1);
+        Integer totalcount = fsService.getFilesCount("In review");
+        ApprovalListResp approvalListResp = new ApprovalListResp();
+        approvalListResp.setList(list);
+        approvalListResp.setTotalcount(totalcount);
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
+        String response = new Gson().toJson(approvalListResp);
+        return response;
+    }
+
+    /**
+     * Description: Admin approve or reject the files which are uploaded by members
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
+    @RequestMapping(value = "/uploadAction", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    public String uploadAction(@RequestBody String body,
+                                  HttpServletRequest req, HttpServletResponse resp) {
+        UploadActionReq ua = new Gson().fromJson(body, UploadActionReq.class);
+        ActionResp actionResp = new ActionResp();
+        Boolean rs = false;
+        actionResp.setStatus(0);
+        actionResp.setMessage("failed");
+        if (ua.getUserid() != null) {
+            fsService.addApproveComments(ua);
+            rs = fsService.updateStatus(ua);
+            if (rs) {
+                actionResp.setStatus(1);
+                actionResp.setMessage("success");
+            }
+        }
+
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
+        String response = new Gson().toJson(actionResp);
+        return response;
+    }
+
+    /**
+     * Description: Get file details by uploadId
+     * @httpMethod get
+     * @param uploadid
+     * @param userid
+     */
     @RequestMapping(value = "/getUploadDetails", method = RequestMethod.GET)
     public String details(@RequestParam("uploadid") String uploadid,
                           @RequestParam("userid") Integer userid,
                           HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
 
-        Boolean rs = false;
         FileDetails fileDetails = fsService.getDetails(userid, uploadid);
         UserFile userFile = fsService.getFile(userid, fileDetails.getFileid());
 
@@ -165,16 +264,24 @@ public class FileController {
         detailsResp.setAuthor(fileDetails.getAuthor());
         detailsResp.setCategory(fileDetails.getCategory());
         detailsResp.setDescription(fileDetails.getDescription());
+        detailsResp.setUsername(userService.getUserName(fileDetails.getUserid()));
+        detailsResp.setComment(fsService.getCommentByUploadId(fileDetails.getUploadid()));
+        detailsResp.setUploadstatus(fileDetails.getUploadstatus());
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
         String response = new Gson().toJson(detailsResp);
         return response;
     }
 
+    /**
+     * Description: Remove files
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/removeFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String removeFile(@RequestBody String body,
                              HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
         UserFile uf = new Gson().fromJson(body, UserFile.class);
         ActionResp actionResp = new ActionResp();
         Boolean rs = false;
@@ -195,10 +302,15 @@ public class FileController {
         return response;
     }
 
+    /**
+     * Description: Remove uploads
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/removeUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String removeUpload(@RequestBody String body,
                                HttpServletRequest req, HttpServletResponse resp) {
-        System.out.println("I‘m here!");
         UserFile uf = new Gson().fromJson(body, UserFile.class);
         ActionResp actionResp = new ActionResp();
         List<FileDetails> list = null;
@@ -206,9 +318,11 @@ public class FileController {
         if (uf.getUserid() != null) {
             list = fsService.removeDetail(uf.getUserid(), uf.getUploadid());
         }
+        actionResp.setStatus(1);
+        actionResp.setMessage("success");
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
-        String response = new Gson().toJson(list);
+        String response = new Gson().toJson(actionResp);
         return response;
     }
 
@@ -226,5 +340,13 @@ public class FileController {
         buffer.append("_");
         buffer.append(System.currentTimeMillis());
         return buffer.toString();
+    }
+
+
+    private String getDate() {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time=(System.currentTimeMillis());
+        String date = format.format(time);
+        return date;
     }
 }

@@ -20,11 +20,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 /**
  * Created by limengheng on 09/08/17.
+ * Controller for message board actions (comments, posts, etc.)
  */
 @RestController
 @RequestMapping(value = "/messageboard")
@@ -38,6 +42,12 @@ public class MessageBoardController {
 
     private static final Logger LOGGER = LogManager.getLogger();
 
+    /**
+     * Description: Create a new topic by a member
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/newPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String newPost(@RequestBody String body,
                           HttpServletRequest req, HttpServletResponse resp) {
@@ -45,7 +55,7 @@ public class MessageBoardController {
         System.out.println("I‘m here!");
         Topic topic = new Gson().fromJson(body, Topic.class);
         topic.setUsername(userService.getUserName(topic.getUserid()));
-        topic.setCreatetime(getTimeStamp());
+        topic.setCreatetime(getDate());
         topic.setLastupdate(topic.getCreatetime());
 //        topic.setStatusindex(Status.getIndex(topic.getStatus()));
         ActionResp actionResp = new ActionResp();
@@ -62,6 +72,13 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Get topic list
+     * @httpMethod get
+     * @mediaType text
+     * @param perpage
+     * @param page
+     */
     @RequestMapping(value = "/getPostList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostlList(@RequestParam("perpage") Integer perpage,
                                @RequestParam("page") Integer page,
@@ -75,6 +92,14 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Get topic list by userId
+     * @httpMethod get
+     * @mediaType text
+     * @param userid
+     * @param perpage
+     * @param page
+     */
     @RequestMapping(value = "/getPostListByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostlListByUserId(@RequestParam("userid") Integer userid,
                                        @RequestParam("perpage") Integer perpage,
@@ -104,6 +129,12 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Get topic details by topicId
+     * @httpMethod get
+     * @mediaType text
+     * @param topicid
+     */
     @RequestMapping(value = "/getPostEditDetail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostEditDetail(@RequestParam("topicid") Integer topicid,
                                     HttpServletRequest req, HttpServletResponse resp) {
@@ -113,13 +144,19 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Add comments to a topic
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/addComments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String addComments(@RequestBody String body,
                               HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("hello,im log4j!");
         System.out.println("I‘m here!");
         Comments comments = new Gson().fromJson(body, Comments.class);
-        comments.setCreatetime(getTimeStamp());
+        comments.setCreatetime(getDate());
         comments.setLastupdate(comments.getCreatetime());
         comments.setUsername(userService.getUserName(comments.getUserid()));
         ActionResp actionResp = new ActionResp();
@@ -137,7 +174,12 @@ public class MessageBoardController {
     }
 
 
-    //TODO
+    /**
+     * Description: Delete comments by commentId
+     * @httpMethod get
+     * @mediaType text
+     * @param commentid
+     */
     @RequestMapping(value = "/deleteComments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteComments(@RequestParam("commentid") Integer commentid,
                                  HttpServletRequest req, HttpServletResponse resp) {
@@ -152,13 +194,19 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Update a topic
+     * @httpMethod post
+     * @mediaType json
+     * @param body
+     */
     @RequestMapping(value = "/updatePost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updatePost(@RequestBody String body,
                              HttpServletRequest req, HttpServletResponse resp) {
         LOGGER.info("hello,im log4j!");
         System.out.println("I‘m here!");
         Topic topic = new Gson().fromJson(body, Topic.class);
-        topic.setLastupdate(getTimeStamp());
+        topic.setLastupdate(getDate());
         ActionResp actionResp = new ActionResp();
         if (topicService.updateTopic(topic)) {
             actionResp.setMessage("success");
@@ -173,6 +221,12 @@ public class MessageBoardController {
         return response;
     }
 
+    /**
+     * Description: Delete a topic by topicId
+     * @httpMethod get
+     * @mediaType text
+     * @param topicid
+     */
     @RequestMapping(value = "/deletePost", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updatePost(@RequestParam("topicid") Integer topicid,
                              HttpServletRequest req, HttpServletResponse resp) {
@@ -205,16 +259,11 @@ public class MessageBoardController {
         return buffer.toString();
     }
 
-    private String getTimeStamp() {
-        Calendar rightNow = Calendar.getInstance();
-        Integer year = rightNow.get(Calendar.YEAR);
-        Integer month = rightNow.get(Calendar.MONTH) + 1;
-        Integer day = rightNow.get(rightNow.DAY_OF_MONTH);
-        Integer hour12 = rightNow.get(rightNow.HOUR);
-        Integer hour24 = rightNow.get(rightNow.HOUR_OF_DAY);
-        Integer minute = rightNow.get(rightNow.MINUTE);
-        Integer second = rightNow.get(rightNow.SECOND);
-        return year + "-" + month + "-" + day + " " + hour12 + ":" + minute + ":" + second;
+    private String getDate() {
+        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time=(System.currentTimeMillis());
+        String date = format.format(time);
+        return date;
     }
 
     public enum Status {

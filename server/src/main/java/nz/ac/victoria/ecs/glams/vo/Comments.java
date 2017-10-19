@@ -2,7 +2,6 @@ package nz.ac.victoria.ecs.glams.vo;
 
 /**
  * Created by limengheng on 02/10/17.
- * Represents a comment on a topic on the messgae board.
  */
 public class Comments {
     private int commentid;
@@ -45,6 +44,7 @@ public class Comments {
     public void setLastupdate(String lastupdate) {
         this.lastupdate = lastupdate;
     }
+
 
     public String getCreatetime() {
         return createtime;
