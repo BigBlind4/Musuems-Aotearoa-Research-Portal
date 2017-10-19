@@ -1,7 +1,7 @@
 package nz.ac.victoria.ecs.glams.vo;
 
 /**
- * Created by limengheng on 06/09/17.
+ * Created by lijianzhou on 06/09/17.
  * Sends message from the server in response to actions
  */
 public class ActionResp {

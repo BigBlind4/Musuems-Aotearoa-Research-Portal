@@ -27,9 +27,10 @@ public class UserController {
 
     /**
      * Description: Get user profile by userId
+     *
+     * @param userid
      * @httpMethod get
      * @mediaType text
-     * @param userid
      */
     @RequestMapping(value = "/getUserProfile", method = RequestMethod.GET)
     public String details(@RequestParam("userid") Integer userid,
@@ -45,9 +46,10 @@ public class UserController {
 
     /**
      * Description: Update user profile by userId
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/updateProfile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateProfile(@RequestBody String body,
@@ -70,9 +72,10 @@ public class UserController {
 
     /**
      * Description: Update user password by userId
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/updatePassword", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updatePassword(@RequestBody String body,

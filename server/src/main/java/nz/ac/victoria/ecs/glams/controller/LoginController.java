@@ -34,9 +34,10 @@ public class LoginController {
 
     /**
      * Description: Member login in
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/member", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String login(@RequestBody String body,
@@ -52,8 +53,8 @@ public class LoginController {
         loginResp.setRole(user.getRole());
         loginResp.setUserid(user.getUserid());
         String response = new Gson().toJson(loginResp);
-        resp.setHeader("Access-Control-Allow-Origin","*");
-        resp.setHeader("Access-Control-Allow-method","POST,GET,OPTIONS");
+        resp.setHeader("Access-Control-Allow-Origin", "*");
+        resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
         return response;
     }
 

@@ -3,7 +3,7 @@ package nz.ac.victoria.ecs.glams.vo;
 import java.util.List;
 
 /**
- * Created by limengheng on 04/10/17.
+ * Created by lijianzhou on 04/10/17.
  */
 public class TopicCommentsResp {
     private Topic topic;

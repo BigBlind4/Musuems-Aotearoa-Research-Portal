@@ -41,9 +41,10 @@ public class FileController {
 
     /**
      * Description: Upload file to server
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/uploadFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadFile(@RequestBody String body,
@@ -54,7 +55,7 @@ public class FileController {
             try {
                 uploadResp.setUserid(uf.getUserid());
                 String uploadId = uf.getUploadid();
-                if(uf.getUploadid()==null || uf.getUploadid().isEmpty()){
+                if (uf.getUploadid() == null || uf.getUploadid().isEmpty()) {
                     uploadId = generateUploadId(uf.getUserid(), uf.getFilename());
                     uploadResp.setUploadid(uploadId);
                 }
@@ -102,9 +103,10 @@ public class FileController {
 
     /**
      * Description: Upload file details to server
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/uploadDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadDetails(@RequestBody String body,
@@ -133,9 +135,10 @@ public class FileController {
 
     /**
      * Description: Update file details
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/updateDetails", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updateDetails(@RequestBody String body,
@@ -148,7 +151,7 @@ public class FileController {
         if (fd.getUserid() != null) {
             rs = fsService.updateDetails(fd);
             if (rs) {
-                fsService.updateStatus(fd.getUserid(),fd.getUploadid(),fd.getUploadstatus());
+                fsService.updateStatus(fd.getUserid(), fd.getUploadid(), fd.getUploadstatus());
                 actionResp.setStatus(1);
                 actionResp.setMessage("You have successfully updated the material.");
             }
@@ -162,16 +165,17 @@ public class FileController {
 
     /**
      * Description: Get file details list
+     *
+     * @param userid
      * @httpMethod get
      * @mediaType text
-     * @param userid
      */
     @RequestMapping(value = "/getUploadDetailsList", method = RequestMethod.GET)
     public String details(@RequestParam("userid") Integer userid,
                           HttpServletRequest req, HttpServletResponse resp) {
         List<FileDetails> list = fsService.getDetailsList(userid);
         List<DetailsResp> dList = new ArrayList<DetailsResp>();
-        for(FileDetails fileDetails : list){
+        for (FileDetails fileDetails : list) {
             DetailsResp detailsResp = new DetailsResp();
             detailsResp.setUserid(fileDetails.getUserid());
             detailsResp.setFileid(fileDetails.getFileid());
@@ -193,15 +197,16 @@ public class FileController {
 
     /**
      * Description: Get the upload list which is needed to review by admin
-     * @httpMethod get
+     *
      * @param perpage
      * @param page
+     * @httpMethod get
      */
     @RequestMapping(value = "/getApprovalList", method = RequestMethod.GET)
     public String getApprovalList(@RequestParam("perpage") Integer perpage,
-                          @RequestParam("page") Integer page,
-                          HttpServletRequest req, HttpServletResponse resp) {
-        List<FileDetails> list = fsService.getInReviewFiles(perpage,page -1);
+                                  @RequestParam("page") Integer page,
+                                  HttpServletRequest req, HttpServletResponse resp) {
+        List<FileDetails> list = fsService.getInReviewFiles(perpage, page - 1);
         Integer totalcount = fsService.getFilesCount("In review");
         ApprovalListResp approvalListResp = new ApprovalListResp();
         approvalListResp.setList(list);
@@ -214,13 +219,14 @@ public class FileController {
 
     /**
      * Description: Admin approve or reject the files which are uploaded by members
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
-    @RequestMapping(value = "/uploadAction", method = RequestMethod.POST,produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/uploadAction", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String uploadAction(@RequestBody String body,
-                                  HttpServletRequest req, HttpServletResponse resp) {
+                               HttpServletRequest req, HttpServletResponse resp) {
         UploadActionReq ua = new Gson().fromJson(body, UploadActionReq.class);
         ActionResp actionResp = new ActionResp();
         Boolean rs = false;
@@ -243,9 +249,10 @@ public class FileController {
 
     /**
      * Description: Get file details by uploadId
-     * @httpMethod get
+     *
      * @param uploadid
      * @param userid
+     * @httpMethod get
      */
     @RequestMapping(value = "/getUploadDetails", method = RequestMethod.GET)
     public String details(@RequestParam("uploadid") String uploadid,
@@ -275,9 +282,10 @@ public class FileController {
 
     /**
      * Description: Remove files
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/removeFile", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String removeFile(@RequestBody String body,
@@ -304,9 +312,10 @@ public class FileController {
 
     /**
      * Description: Remove uploads
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/removeUpload", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String removeUpload(@RequestBody String body,
@@ -344,8 +353,8 @@ public class FileController {
 
 
     private String getDate() {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Long time=(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time = (System.currentTimeMillis());
         String date = format.format(time);
         return date;
     }

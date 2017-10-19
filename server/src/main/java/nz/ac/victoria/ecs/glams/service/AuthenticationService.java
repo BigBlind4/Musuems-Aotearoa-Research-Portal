@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.HashMap;
 
 /**
- * Created by limengheng on 06/09/17.
+ * Created by lijianzhou on 06/09/17.
  * Services to check and change user login information
  */
 
@@ -28,18 +28,20 @@ public class AuthenticationService {
 
     /**
      * updates a user's password, returns true if successful
+     *
      * @param u
      * @param username
      * @return
      */
-    public boolean updatePassword(UpdatePasswordReq u, String username){
-        UsersNames.put(username,u.getNewpassword());
-        UsersEmails.put(username+"@gmail.com",u.getNewpassword());
+    public boolean updatePassword(UpdatePasswordReq u, String username) {
+        UsersNames.put(username, u.getNewpassword());
+        UsersEmails.put(username + "@gmail.com", u.getNewpassword());
         return true;
     }
 
     /**
      * Checks user information is valid, returns true if it is, otherwise false
+     *
      * @param user
      * @return
      */

@@ -44,9 +44,10 @@ public class MessageBoardController {
 
     /**
      * Description: Create a new topic by a member
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/newPost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String newPost(@RequestBody String body,
@@ -57,7 +58,6 @@ public class MessageBoardController {
         topic.setUsername(userService.getUserName(topic.getUserid()));
         topic.setCreatetime(getDate());
         topic.setLastupdate(topic.getCreatetime());
-//        topic.setStatusindex(Status.getIndex(topic.getStatus()));
         ActionResp actionResp = new ActionResp();
         if (topicService.addTopics(topic)) {
             actionResp.setMessage("success");
@@ -74,10 +74,11 @@ public class MessageBoardController {
 
     /**
      * Description: Get topic list
-     * @httpMethod get
-     * @mediaType text
+     *
      * @param perpage
      * @param page
+     * @httpMethod get
+     * @mediaType text
      */
     @RequestMapping(value = "/getPostList", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostlList(@RequestParam("perpage") Integer perpage,
@@ -86,7 +87,7 @@ public class MessageBoardController {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
         TopicListResp topicListResp = new TopicListResp();
-        topicListResp.setList(topicService.getTopics(perpage, page -1));
+        topicListResp.setList(topicService.getTopics(perpage, page - 1));
         topicListResp.setTotalcount(topicService.getTopicsCount(null));
         String response = new Gson().toJson(topicListResp);
         return response;
@@ -94,11 +95,12 @@ public class MessageBoardController {
 
     /**
      * Description: Get topic list by userId
-     * @httpMethod get
-     * @mediaType text
+     *
      * @param userid
      * @param perpage
      * @param page
+     * @httpMethod get
+     * @mediaType text
      */
     @RequestMapping(value = "/getPostListByUserId", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostlListByUserId(@RequestParam("userid") Integer userid,
@@ -108,7 +110,7 @@ public class MessageBoardController {
         resp.setHeader("Access-Control-Allow-Origin", "*");
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
         TopicListResp topicListResp = new TopicListResp();
-        topicListResp.setList(topicService.getTopicsByUserId(userid, perpage, page -1));
+        topicListResp.setList(topicService.getTopicsByUserId(userid, perpage, page - 1));
         topicListResp.setTotalcount(topicService.getTopicsCount(userid));
         String response = new Gson().toJson(topicListResp);
         return response;
@@ -123,7 +125,7 @@ public class MessageBoardController {
         resp.setHeader("Access-Control-Allow-method", "POST,GET,OPTIONS");
         TopicCommentsResp topicCommentsResp = new TopicCommentsResp();
         topicCommentsResp.setTopic(topicService.getTopic(topicid));
-        topicCommentsResp.setComments(topicService.getComments(topicid, perpage, page -1));
+        topicCommentsResp.setComments(topicService.getComments(topicid, perpage, page - 1));
         topicCommentsResp.setCommentsCount(topicService.getCommentsCount(topicid));
         String response = new Gson().toJson(topicCommentsResp);
         return response;
@@ -131,9 +133,10 @@ public class MessageBoardController {
 
     /**
      * Description: Get topic details by topicId
+     *
+     * @param topicid
      * @httpMethod get
      * @mediaType text
-     * @param topicid
      */
     @RequestMapping(value = "/getPostEditDetail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String getPostEditDetail(@RequestParam("topicid") Integer topicid,
@@ -146,9 +149,10 @@ public class MessageBoardController {
 
     /**
      * Description: Add comments to a topic
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/addComments", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String addComments(@RequestBody String body,
@@ -176,9 +180,10 @@ public class MessageBoardController {
 
     /**
      * Description: Delete comments by commentId
+     *
+     * @param commentid
      * @httpMethod get
      * @mediaType text
-     * @param commentid
      */
     @RequestMapping(value = "/deleteComments", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String deleteComments(@RequestParam("commentid") Integer commentid,
@@ -196,9 +201,10 @@ public class MessageBoardController {
 
     /**
      * Description: Update a topic
+     *
+     * @param body
      * @httpMethod post
      * @mediaType json
-     * @param body
      */
     @RequestMapping(value = "/updatePost", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updatePost(@RequestBody String body,
@@ -223,9 +229,10 @@ public class MessageBoardController {
 
     /**
      * Description: Delete a topic by topicId
+     *
+     * @param topicid
      * @httpMethod get
      * @mediaType text
-     * @param topicid
      */
     @RequestMapping(value = "/deletePost", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String updatePost(@RequestParam("topicid") Integer topicid,
@@ -260,8 +267,8 @@ public class MessageBoardController {
     }
 
     private String getDate() {
-        SimpleDateFormat format =  new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Long time=(System.currentTimeMillis());
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        Long time = (System.currentTimeMillis());
         String date = format.format(time);
         return date;
     }

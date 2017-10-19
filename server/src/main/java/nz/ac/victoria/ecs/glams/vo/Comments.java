@@ -1,7 +1,7 @@
 package nz.ac.victoria.ecs.glams.vo;
 
 /**
- * Created by limengheng on 02/10/17.
+ * Created by lijianzhou on 02/10/17.
  */
 public class Comments {
     private int commentid;

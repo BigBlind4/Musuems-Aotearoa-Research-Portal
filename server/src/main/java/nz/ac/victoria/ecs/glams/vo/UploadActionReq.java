@@ -1,7 +1,7 @@
 package nz.ac.victoria.ecs.glams.vo;
 
 /**
- * Created by limengheng on 12/10/17.
+ * Created by lijianzhou on 12/10/17.
  */
 public class UploadActionReq {
     private String uploadid;
